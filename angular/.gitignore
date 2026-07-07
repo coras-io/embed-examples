@@ -1,0 +1,20 @@
+# Compiled output
+/dist
+/tmp
+/out-tsc
+
+# Node
+node_modules
+npm-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Angular builder cache
+/.angular/cache
+.angular
+
+# Local env overrides
+.env
+.env.local
+
+.DS_Store

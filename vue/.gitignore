@@ -1,0 +1,10 @@
+node_modules
+dist
+dist-ssr
+*.local
+
+# Local env overrides
+.env
+.env.local
+
+.DS_Store

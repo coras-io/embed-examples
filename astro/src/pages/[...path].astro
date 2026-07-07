@@ -1,0 +1,32 @@
+---
+// Catch-all route. Astro is a static MPA, but the Coras SDK renders web
+// components in the browser only, so this single page owns a persistent
+// client-side mount and drives History-API routing for every
+// `/:locale/:currency/...` URL.
+//
+// Under `output: "static"` a dynamic route needs `getStaticPaths()`. We emit
+// exactly one page — the root `index.html`. Client-side routing (main.ts)
+// handles every deeper URL within that one loaded page, so point the static
+// bucket's 404/error document at `index.html` and refreshes/deep links resolve
+// to the SPA instead of a storage 404.
+export function getStaticPaths() {
+  return [{ params: { path: undefined } }];
+}
+---
+
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Coras Embed — Astro example</title>
+  </head>
+  <body>
+    <div id="app"></div>
+    <!-- Client-only. Astro bundles this script (and its imports) for the
+         browser and never runs it during SSR/prerender, so `mount()` only
+         touches the DOM once the container above exists. -->
+    <script>
+      import "../main.ts";
+    </script>
+  </body>
+</html>

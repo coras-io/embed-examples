@@ -1,0 +1,7 @@
+{{! Mount once on insert; call app.update() whenever page/params/config change; }}
+{{! unmount on teardown. did-update re-runs when any tracked argument changes. }}
+<div
+  {{did-insert this.insert}}
+  {{did-update this.update @page @params @config}}
+  {{will-destroy this.teardown}}
+></div>

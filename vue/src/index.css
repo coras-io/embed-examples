@@ -1,0 +1,23 @@
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+#app,
+coras-landing-page,
+coras-details-page,
+coras-payment-page,
+coras-help-page,
+coras-search-page {
+  display: flex;
+  flex-direction: column;
+  flex: 1 0 auto;
+}
+
+coras-footer {
+  margin-top: auto;
+}
