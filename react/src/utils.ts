@@ -12,8 +12,8 @@ import { config } from "./config.ts";
 import { setLastLocation } from "./last-location.ts";
 import theme from "../brand.json";
 
-// The shared demo identity. brand.json — imported here as the SDK `config.theme`
-// — owns the colours, fonts, and logo, so the embedded pages take their look
+// The shared demo identity. brand.json - imported here as the SDK `config.theme`
+// - owns the colours, fonts, and logo, so the embedded pages take their look
 // from it, not the SDK's built-in defaults. Every framework example ships the
 // same file, and its assets load from the public Coras CDN, so a fresh clone
 // renders with no local setup.
@@ -42,7 +42,7 @@ export const corasChrome: CorasChrome = {
 };
 
 // Default strategy: locale + currency in the path, details as a bare id segment
-// — matching this app's TanStack routes. Exported so the layout route can derive
+// - matching this app's TanStack routes. Exported so the layout route can derive
 // the current page + params straight from the URL for a single persistent mount.
 export const corasUrl = createCorasUrlState();
 

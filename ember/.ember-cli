@@ -1,4 +1,6 @@
 {
   "disableAnalytics": true,
-  "isTypeScriptProject": false
+  "isTypeScriptProject": false,
+  "componentAuthoringFormat": "strict",
+  "routeAuthoringFormat": "strict"
 }

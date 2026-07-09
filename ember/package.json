@@ -1,38 +1,45 @@
 {
-  "name": "@coras-io/example-ember",
+  "name": "coras-example",
   "private": true,
   "version": "0.0.0",
-  "description": "Ember Octane example integrating the Coras embeddable ticketing SDK",
+  "description": "Ember (Vite) example integrating the Coras embeddable ticketing SDK",
+  "exports": {
+    "./tests/*": "./tests/*",
+    "./*": "./app/*"
+  },
   "scripts": {
-    "dev": "ember serve",
-    "start": "ember serve",
-    "build": "ember build --environment=production",
-    "build:dev": "ember build"
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
   },
   "dependencies": {
-    "@coras-io/embed": "^0.1.0"
+    "@coras-io/embed": "^0.1.2"
   },
   "devDependencies": {
-    "@babel/core": "^7.24.0",
-    "@ember/optional-features": "^2.1.0",
-    "@ember/render-modifiers": "^2.1.0",
-    "@glimmer/component": "^1.1.2",
-    "broccoli-asset-rev": "^3.0.0",
-    "ember-auto-import": "^2.10.0",
-    "ember-cli": "~5.8.0",
-    "ember-cli-babel": "^8.2.0",
-    "ember-cli-htmlbars": "^6.3.0",
-    "ember-cli-inject-live-reload": "^2.1.0",
-    "ember-cli-terser": "^4.0.2",
-    "ember-load-initializers": "^2.1.2",
-    "ember-modifier": "^4.2.0",
-    "ember-resolver": "^11.0.1",
-    "ember-source": "~5.8.0",
-    "loader.js": "^4.7.0",
-    "webpack": "^5.90.0"
+    "@babel/core": "^7.29.7",
+    "@babel/plugin-transform-runtime": "^7.29.7",
+    "@babel/runtime": "^7.29.7",
+    "@ember/optional-features": "^3.0.0",
+    "@embroider/compat": "^4.1.20",
+    "@embroider/config-meta-loader": "^1.0.0",
+    "@embroider/core": "^4.6.1",
+    "@embroider/macros": "^1.20.4",
+    "@embroider/router": "^3.0.6",
+    "@embroider/vite": "^1.7.7",
+    "@glimmer/component": "^2.1.1",
+    "@rollup/plugin-babel": "^7.1.0",
+    "babel-plugin-ember-template-compilation": "^4.0.0",
+    "decorator-transforms": "^2.3.2",
+    "ember-cli": "~7.0.0",
+    "ember-cli-babel": "^8.3.1",
+    "ember-load-initializers": "^3.0.1",
+    "ember-modifier": "^4.3.0",
+    "ember-resolver": "^13.2.0",
+    "ember-source": "~7.1.0",
+    "vite": "8.1.2"
   },
   "engines": {
-    "node": ">=18"
+    "node": ">= 20.19.0"
   },
   "ember": {
     "edition": "octane"

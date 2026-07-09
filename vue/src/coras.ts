@@ -8,7 +8,7 @@ import { createCorasUrlState } from "@coras-io/embed/url";
 import { config } from "./config.ts";
 import theme from "../brand.json";
 
-// The shared demo identity. brand.json — passed to the SDK as `config.theme` —
+// The shared demo identity. brand.json - passed to the SDK as `config.theme` -
 // owns the colours, fonts, and logo, and its assets load from the public Coras
 // CDN, so a fresh clone renders with no local setup.
 const site = {
@@ -30,7 +30,7 @@ export const chrome: CorasChrome = {
 };
 
 // Locale + currency in the path, details as a bare id segment (the SDK default)
-// — matching this app's `/:locale/:currency` routes. Shared so build and parse
+// - matching this app's `/:locale/:currency` routes. Shared so build and parse
 // always agree on the shape of a URL.
 export const url = createCorasUrlState();
 

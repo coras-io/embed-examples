@@ -1,11 +1,11 @@
-# Coras Embed — vanilla JS example
+# Coras Embed - vanilla JS example
 
 A working, framework-free integration of the Coras embeddable ticketing SDK
 (`@coras-io/embed`). The SDK is mounted once with `mount()`, the host owns
 routing through the browser History API, and navigation updates the mounted app
 in place instead of remounting it.
 
-This is the smallest possible host: no framework, no router library — just the
+This is the smallest possible host: no framework, no router library - just the
 SDK and ~50 lines of glue. Every framework example wires up the same
 `mount()` / `update()` / `unmount()` contract.
 

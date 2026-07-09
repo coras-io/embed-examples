@@ -22,13 +22,15 @@ const routes: RouteRecordRaw[] = [
   {
     // One layout owns the single persistent mount for every page below it. The
     // child routes only declare the URL shape (`landing` = root, `search`, and
-    // `details` = a bare id segment) — the mount reads the URL and renders the
+    // `details` = a bare id segment) - the mount reads the URL and renders the
     // matching page, so navigating between them updates in place.
     path: "/:locale/:currency",
     component: LocaleCurrencyLayout,
     children: [
       { path: "", name: "landing", component: EmbeddedPage },
       { path: "search", name: "search", component: EmbeddedPage },
+      { path: "payment", name: "payment", component: EmbeddedPage },
+      { path: "help", name: "help", component: EmbeddedPage },
       { path: ":id", name: "details", component: EmbeddedPage },
     ],
   },

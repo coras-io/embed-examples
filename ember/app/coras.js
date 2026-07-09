@@ -1,38 +1,23 @@
 import { createCorasUrlState } from '@coras-io/embed/url';
-import ENV from 'coras-example/config/environment';
+import brand from '../brand.json';
+import ENV from './config/environment';
 
 /**
  * @import { CorasChrome, CorasConfig, CorasNavigateDetail, CorasStateChangeDetail } from '@coras-io/embed'
  * @import RouterService from '@ember/routing/router-service'
  */
 
-// The shared demo identity. This object — passed to the SDK as `config.theme` —
-// owns the colours, fonts, and logo, and its assets load from the public Coras
-// CDN, so a fresh clone renders with no local setup.
-//
-// It is a VERBATIM copy of `brand.json` at the app root (the canonical file every
-// framework example ships). Ember's classic build does not import JSON from the
-// app tree, so the same values are inlined here; edit `brand.json` and mirror it.
-const theme = {
-  schemaVersion: 1,
-  primary: '#4657d4',
-  secondary: '#161c44',
-  textButton: '#ffffff',
-  font: 'Inter, sans-serif',
-  logo: 'https://assets.sandbox.coras.io/brands/8cffaf2d-26d2-4c84-bb1d-3f417e0cb8c1/assets/images/logo.svg',
-  success: '#00ad8f',
-  error: '#c9224a',
-};
-
-const site = {
-  title: 'Coras',
-};
+// The shared demo identity, passed to the SDK as `config.theme` - colours,
+// fonts, and logo, with assets served from the public Coras CDN so a fresh
+// clone renders with no local setup. `brand.json` is the canonical file every
+// framework example ships; the Vite build imports it directly here.
+const theme = /** @type {CorasConfig['theme']} */ (brand);
 
 // Host-owned logo, projected into the SDK navbar's `brand` slot. The SDK moves
 // this one element between navbars on navigation (only one page is mounted).
 const logo = document.createElement('img');
-logo.src = theme.logo;
-logo.alt = site.title;
+logo.src = brand.logo;
+logo.alt = 'Coras';
 
 /**
  * SDK chrome: the managed Coras navbar (with our logo) and footer.
@@ -44,7 +29,7 @@ export const corasChrome = {
 };
 
 // Locale + currency in the path, details as a bare id segment (the SDK default).
-// Shared so build and parse always agree on the shape of a URL — and it matches
+// Shared so build and parse always agree on the shape of a URL - and it matches
 // the Ember router map in `app/router.js`.
 export const corasUrl = createCorasUrlState();
 
@@ -60,7 +45,7 @@ export function buildConfig(locale, currency) {
     apiUrl: ENV.coras.apiUrl,
     distributorId: ENV.coras.distributorId,
     assetsUrl: ENV.coras.assetsUrl,
-    theme: /** @type {CorasConfig['theme']} */ (theme),
+    theme,
     locale,
     currency,
     loyaltyPointsEnabled: true,
@@ -70,8 +55,8 @@ export function buildConfig(locale, currency) {
 /**
  * Host owns routing: turn a navigation intent into a real Ember transition. An
  * external `href` opens in a new tab; otherwise build a canonical URL and push
- * it. The URL change feeds back into `app.update()` — which does not re-emit
- * `onNavigate` — so there is no loop.
+ * it. The URL change feeds back into `app.update()` - which does not re-emit
+ * `onNavigate` - so there is no loop.
  * @param {RouterService} router
  * @param {CorasNavigateDetail} intent
  */

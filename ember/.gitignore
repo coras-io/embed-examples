@@ -5,6 +5,10 @@ node_modules
 dist
 tmp
 
+# Vite / Embroider caches
+.vite
+node_modules/.embroider
+
 # Local env overrides
 .env
 .env.local

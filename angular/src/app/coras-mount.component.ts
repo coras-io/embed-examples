@@ -24,7 +24,7 @@ import {
 /**
  * Thin Angular wrapper around the SDK `mount()` contract. It mounts once in
  * `ngAfterViewInit` (the SDK renders web components, so it must run in the
- * browser after the host element exists — never during SSR), reflects
+ * browser after the host element exists - never during SSR), reflects
  * page/params/config changes with `app.update()` (never a remount), and tears
  * the app down in `ngOnDestroy`.
  *
@@ -70,7 +70,7 @@ export class CorasMountComponent
 
   ngOnChanges(): void {
     // The first change set arrives before `ngAfterViewInit`, when the app does
-    // not exist yet — the initial state is passed straight to `mount()` there.
+    // not exist yet - the initial state is passed straight to `mount()` there.
     // Every later change reflects in place.
     this.app?.update({
       page: this.page,

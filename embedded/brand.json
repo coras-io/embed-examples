@@ -1,0 +1,10 @@
+{
+  "schemaVersion": 1,
+  "primary": "#4657d4",
+  "secondary": "#161c44",
+  "textButton": "#ffffff",
+  "font": "Inter, sans-serif",
+  "logo": "https://assets.sandbox.coras.io/brands/8cffaf2d-26d2-4c84-bb1d-3f417e0cb8c1/assets/images/logo.svg",
+  "success": "#00ad8f",
+  "error": "#c9224a"
+}

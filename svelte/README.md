@@ -1,11 +1,11 @@
-# Coras Embed — SvelteKit example
+# Coras Embed - SvelteKit example
 
 A working [SvelteKit](https://svelte.dev/docs/kit) integration of the Coras
 embeddable ticketing SDK (`@coras-io/embed`). The SDK is mounted once with
 `mount()`, the host owns routing through SvelteKit's router, and navigation
 updates the mounted app in place instead of remounting it.
 
-Clone it, run it, and adapt the pattern to your own app — every framework uses
+Clone it, run it, and adapt the pattern to your own app - every framework uses
 the same `mount()` / `update()` / `unmount()` API.
 
 ## Run it
@@ -15,7 +15,7 @@ pnpm install
 pnpm dev
 ```
 
-That's it — the example ships pointed at the public Coras sandbox and CDN, so it
+That's it - the example ships pointed at the public Coras sandbox and CDN, so it
 renders real content with no configuration. Open the URL Vite prints; the root
 path redirects to `/:locale/:currency` and renders the Coras landing page inside
 the SDK chrome.
@@ -29,7 +29,7 @@ browser:
 | `PUBLIC_API_HOST`       | `https://sandbox.coras.io`               | Coras API origin, passed as `apiUrl`.         |
 | `PUBLIC_DISTRIBUTOR_ID` | the shared example distributor           | Passed to the SDK as `distributorId`.         |
 | `PUBLIC_ASSETS_URL`     | `https://assets.sandbox.coras.io/shared` | SDK shared-asset base, passed as `assetsUrl`. |
-| `PUBLIC_ALLOWED_HOSTS`  | —                                        | Comma-separated hosts for the dev server.     |
+| `PUBLIC_ALLOWED_HOSTS`  | -                                        | Comma-separated hosts for the dev server.     |
 
 ## What it demonstrates
 
@@ -37,13 +37,13 @@ browser:
   changes call `app.update()`, so the navbar, footer, and chrome stay in place
   and only the page content swaps.
 - Host-owned routing: the SDK reports navigation intent through `onNavigate` and
-  `onStateChange`, and the app maps those to `goto()` — a new history entry for a
+  `onStateChange`, and the app maps those to `goto()` - a new history entry for a
   navigation, a `replaceState` for an in-page state change.
 - Reading the current page and params from the URL with the SDK URL helper, then
   feeding them back into `mount()` / `update()` so deep links and back/forward
   work.
 - Theming from a committed [`brand.json`](brand.json), passed once as
-  `config.theme` — the SDK themes only from `config.theme`, never from the API.
+  `config.theme` - the SDK themes only from `config.theme`, never from the API.
 - Projecting a host-owned logo into the SDK navbar `brand` slot through the
   `chrome` option, with its click wired back to the landing page.
 
@@ -63,7 +63,7 @@ The SDK renders web components in the browser only, so the app is a pure
 client-rendered SPA:
 
 - `src/routes/+layout.ts` sets `ssr = false` and `prerender = false`, and
-  `CorasMount.svelte` calls `mount()` inside `onMount` — never during SSR or in a
+  `CorasMount.svelte` calls `mount()` inside `onMount` - never during SSR or in a
   `load`. `src/lib/coras.ts` creates the logo `<img>` lazily in `buildChrome()`
   (called from the client-only mount) so importing the module never touches
   `document`.

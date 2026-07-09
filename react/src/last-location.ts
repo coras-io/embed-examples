@@ -4,7 +4,7 @@
  * The URL stays the source of truth for the current view (shareable, deep
  * linkable, back/forward works). This is purely a fallback so the landing
  * page can restore the previous selection when the user returns via a link
- * that does not carry country/city — instead of falling back to geolocation
+ * that does not carry country/city - instead of falling back to geolocation
  * and silently resetting their choice.
  */
 
@@ -29,7 +29,7 @@ export function setLastLocation(value: LastLocation): void {
   try {
     window.localStorage.setItem(STORAGE_KEY, JSON.stringify(value));
   } catch {
-    // Storage quota exceeded or disabled — silently skip.
+    // Storage quota exceeded or disabled - silently skip.
   }
 }
 

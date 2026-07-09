@@ -1,5 +1,5 @@
-import EmberRouter from '@ember/routing/router';
-import config from 'coras-example/config/environment';
+import EmberRouter from '@embroider/router';
+import config from './config/environment';
 
 export default class Router extends EmberRouter {
   location = config.locationType;
@@ -7,9 +7,10 @@ export default class Router extends EmberRouter {
 }
 
 // Every embedded page lives under `/:locale/:currency`, so the SDK's locale and
-// currency are part of the URL. One persistent mount (in `embed.hbs`) serves the
+// currency are part of the URL. One persistent mount (in `embed.gjs`) serves the
 // index (landing) and every child route; the child routes only own their URL
-// segment — the mounted app reads the URL and updates itself in place.
+// segment - the mounted app reads the URL and updates itself in place, so they
+// need no template of their own.
 Router.map(function () {
   this.route('embed', { path: '/:locale/:currency' }, function () {
     this.route('search');

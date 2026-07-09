@@ -38,7 +38,7 @@ export const Route = createFileRoute("/$locale/$currency")({
 /**
  * Single persistent mount for every page under `/:locale/:currency`. The page
  * and params are derived from the URL so navigation between child routes updates
- * the mount in place (`app.update()`) instead of tearing it down — the navbar,
+ * the mount in place (`app.update()`) instead of tearing it down - the navbar,
  * footer, and chrome stay put and only the page content swaps.
  */
 function LocaleCurrencyLayout() {
@@ -48,7 +48,7 @@ function LocaleCurrencyLayout() {
 
   const { page, params } = corasUrl.parse(location.href);
   // On landing, restore the previously stored country/city when the URL
-  // carries neither — URL-supplied values always win.
+  // carries neither - URL-supplied values always win.
   const resolvedParams =
     page === "landing" ? withStoredLocation(params) : params;
 

@@ -1,8 +1,10 @@
 'use strict';
 
-// Ember has no `import.meta.env`. Optional backend overrides are read here from
-// the shell environment at build time, each falling back to a public default so
-// a fresh clone runs with ZERO configuration against the Coras sandbox + CDN.
+// Build-time config. Optional backend overrides are read from the shell
+// environment here (Ember's config is a plain Node module, evaluated during the
+// Embroider build), each falling back to a public default so a fresh clone runs
+// with ZERO configuration against the Coras sandbox + CDN. These values are
+// serialised into a meta tag and read back at runtime by `app/config/environment.js`.
 module.exports = function (environment) {
   const ENV = {
     modulePrefix: 'coras-example',
@@ -20,15 +22,11 @@ module.exports = function (environment) {
     coras: {
       apiUrl: process.env.CORAS_API_HOST || 'https://sandbox.coras.io',
       distributorId:
-        process.env.CORAS_DISTRIBUTOR_ID ||
-        'a8405267cbcf4bd2b70114e618516645',
-      assetsUrl: process.env.CORAS_ASSETS_URL || 'https://assets.sandbox.coras.io/shared',
+        process.env.CORAS_DISTRIBUTOR_ID || 'a8405267cbcf4bd2b70114e618516645',
+      assetsUrl:
+        process.env.CORAS_ASSETS_URL || 'https://assets.sandbox.coras.io/shared',
     },
   };
-
-  if (environment === 'development') {
-    // ENV.APP.LOG_RESOLVER = true;
-  }
 
   if (environment === 'test') {
     ENV.locationType = 'none';

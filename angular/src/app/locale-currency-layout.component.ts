@@ -1,6 +1,7 @@
-import { Component, OnDestroy, OnInit } from "@angular/core";
+import { Component, DestroyRef, inject, OnInit } from "@angular/core";
 import { NavigationEnd, Router, RouterOutlet } from "@angular/router";
-import { filter, Subscription } from "rxjs";
+import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
+import { filter } from "rxjs";
 import type {
   CorasConfig,
   CorasNavigateDetail,
@@ -17,7 +18,7 @@ import { buildConfig, chrome, logo, url } from "./coras";
 /**
  * Single persistent mount for every page under `:locale/:currency`. The page
  * and params are derived from the URL, so navigating between child routes (and
- * back/forward) updates the mount in place instead of tearing it down — the
+ * back/forward) updates the mount in place instead of tearing it down - the
  * navbar, footer, and chrome stay put and only the page content swaps.
  */
 @Component({
@@ -36,34 +37,35 @@ import { buildConfig, chrome, logo, url } from "./coras";
     <router-outlet />
   `,
 })
-export class LocaleCurrencyLayoutComponent implements OnInit, OnDestroy {
+export class LocaleCurrencyLayoutComponent implements OnInit {
   page: CorasPageName = "landing";
   params: CorasPageParams = {};
   config!: CorasConfig;
   readonly chrome = chrome;
 
-  private routerSub?: Subscription;
-
-  constructor(private readonly router: Router) {}
+  private readonly router = inject(Router);
+  private readonly destroyRef = inject(DestroyRef);
 
   ngOnInit(): void {
     // Deep links and refreshes just work: the current view is read straight
     // from the URL rather than tracked in component state. Re-read on every
-    // navigation (link or back/forward) so the mount updates in place.
+    // navigation (link or back/forward) so the mount updates in place. The
+    // subscription tears down automatically when the component is destroyed.
     this.syncFromUrl();
-    this.routerSub = this.router.events
-      .pipe(filter((event) => event instanceof NavigationEnd))
+    this.router.events
+      .pipe(
+        filter((event) => event instanceof NavigationEnd),
+        takeUntilDestroyed(this.destroyRef),
+      )
       .subscribe(() => this.syncFromUrl());
 
     // The navbar logo is host-owned DOM (slotted into the SDK navbar), so its
     // click is wired here: return to the landing page for the current
-    // locale/currency.
+    // locale/currency. Cleaned up on destroy alongside the subscription.
     logo.addEventListener("click", this.goToLanding);
-  }
-
-  ngOnDestroy(): void {
-    this.routerSub?.unsubscribe();
-    logo.removeEventListener("click", this.goToLanding);
+    this.destroyRef.onDestroy(() =>
+      logo.removeEventListener("click", this.goToLanding),
+    );
   }
 
   onNavigate(intent: CorasNavigateDetail): void {

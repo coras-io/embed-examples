@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Riverside Live - Coras Embed (embedded example)</title>
+    <!--
+      This CSS styles the HOST app's own shell only - its navbar, footer and
+      plain pages. It never targets Coras elements: the embed is themed entirely
+      by brand.json (config.theme). This is the host chrome that Coras sits
+      inside in embedded mode.
+    -->
+    <style>
+      :root {
+        font-family: system-ui, sans-serif;
+        --host-ink: #161c44;
+        --host-line: #e6e6ef;
+      }
+      body {
+        margin: 0;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        color: var(--host-ink);
+      }
+      .host-nav {
+        display: flex;
+        align-items: center;
+        gap: 24px;
+        padding: 14px 24px;
+        border-bottom: 1px solid var(--host-line);
+      }
+      .host-nav .brand {
+        font-weight: 700;
+        font-size: 18px;
+      }
+      .host-nav nav {
+        display: flex;
+        gap: 18px;
+        margin-left: auto;
+      }
+      .host-nav a {
+        color: var(--host-ink);
+        text-decoration: none;
+      }
+      .host-nav a.active {
+        text-decoration: underline;
+        text-underline-offset: 4px;
+      }
+      /* Coras mounts here. The host gives it a content region, not the viewport. */
+      #app {
+        flex: 1 0 auto;
+      }
+      .host-page {
+        max-width: 720px;
+        margin: 0 auto;
+        padding: 48px 24px;
+      }
+      .host-footer {
+        padding: 18px 24px;
+        border-top: 1px solid var(--host-line);
+        font-size: 14px;
+        color: #6b6b7b;
+      }
+    </style>
+  </head>
+  <body>
+    <header class="host-nav">
+      <a class="brand" href="/" data-link>Riverside Live</a>
+      <nav>
+        <a href="/" data-link>Home</a>
+        <a href="/tickets" data-link>Tickets</a>
+        <a href="/about" data-link>About</a>
+      </nav>
+    </header>
+
+    <!-- The host's content region. Host pages render here; so does Coras. -->
+    <main id="app"></main>
+
+    <footer class="host-footer">© Riverside Live - a host-owned footer</footer>
+
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

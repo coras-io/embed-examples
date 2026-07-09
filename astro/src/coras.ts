@@ -2,7 +2,7 @@ import type { CorasChrome, CorasConfig } from "@coras-io/embed";
 import { createCorasUrlState } from "@coras-io/embed/url";
 import theme from "../brand.json";
 
-// The shared demo identity. brand.json — passed to the SDK as `config.theme` —
+// The shared demo identity. brand.json - passed to the SDK as `config.theme` -
 // owns the colours, fonts, and logo, and its assets load from the public Coras
 // CDN, so a fresh clone renders with no local setup.
 const site = {

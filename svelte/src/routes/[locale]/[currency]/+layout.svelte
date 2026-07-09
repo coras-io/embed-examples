@@ -21,7 +21,7 @@
 
   // A single persistent mount serves every page under `/:locale/:currency`. Read
   // the current page + params straight from the URL, so a link, deep link,
-  // refresh, or back/forward all resolve to `app.update()` in place — the
+  // refresh, or back/forward all resolve to `app.update()` in place - the
   // navbar, footer, and chrome stay put and only the page content swaps.
   const route = $derived(url.parse(page.url.href));
   const config = $derived(buildConfig(locale, currency));

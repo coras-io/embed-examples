@@ -13,7 +13,7 @@ import { buildConfig, chrome, logo, url } from "../coras.ts";
 /**
  * Single persistent mount for every page under `/:locale/:currency`. The page
  * and params are derived from the URL, so navigating between child routes (and
- * back/forward) updates the mount in place instead of tearing it down — the
+ * back/forward) updates the mount in place instead of tearing it down - the
  * navbar, footer, and chrome stay put and only the page content swaps.
  */
 const route = useRoute();
