@@ -1,7 +1,4 @@
-import {
-  SupportedCurrencies,
-  SupportedLocales,
-} from "@coras-io/embed/types";
+import type { SupportedCurrencies, SupportedLocales } from "@coras-io/embed";
 
 export const config: {
   currency: SupportedCurrencies;
@@ -19,7 +16,6 @@ export const config: {
     "DKK",
     "EUR",
     "GBP",
-    "HRK",
     "HUF",
     "IDR",
     "ISK",

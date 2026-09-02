@@ -12,7 +12,9 @@ const site = {
 
 // Host-owned logo, projected into the SDK navbar's `brand` slot. The SDK moves
 // this one element between navbars on navigation (only one page is mounted).
-const logo = document.createElement("img");
+// Exported so the entry can wire its click to "go to landing": a slotted brand
+// element owns its own navigation, so the host is responsible for the home link.
+export const logo = document.createElement("img");
 logo.src = theme.logo;
 logo.alt = site.title;
 

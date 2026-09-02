@@ -4,7 +4,7 @@ import {
   type CorasNavigateDetail,
   type CorasStateChangeDetail,
 } from "@coras-io/embed";
-import { buildConfig, chrome, url } from "./coras.ts";
+import { buildConfig, chrome, logo, url } from "./coras.ts";
 
 const container = document.getElementById("app")!;
 
@@ -52,4 +52,12 @@ const app: CorasApp = mount({
 addEventListener("popstate", () => {
   const { page, params } = url.parse(location.href);
   app.update({ page, params });
+});
+
+// The navbar logo is a home link. A slotted brand element owns its own
+// navigation, so wire its click to the landing page for the URL's current
+// locale/currency.
+logo.addEventListener("click", () => {
+  const { locale, currency } = url.parse(location.href);
+  syncUrl({ page: "landing", params: {}, locale, currency }, false);
 });

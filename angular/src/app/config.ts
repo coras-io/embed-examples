@@ -22,7 +22,6 @@ export const config: {
     "DKK",
     "EUR",
     "GBP",
-    "HRK",
     "HUF",
     "IDR",
     "ISK",

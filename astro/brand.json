@@ -4,7 +4,12 @@
   "secondary": "#161c44",
   "textButton": "#ffffff",
   "font": "Inter, sans-serif",
-  "logo": "https://assets.sandbox.coras.io/brands/8cffaf2d-26d2-4c84-bb1d-3f417e0cb8c1/assets/images/logo.svg",
+  "logo": "https://assets.sandbox.coras.io/brands/example/assets/images/logo.svg",
+  "logoDark": "https://assets.sandbox.coras.io/brands/example/assets/images/logo-dark.svg",
   "success": "#00ad8f",
-  "error": "#c9224a"
+  "error": "#c9224a",
+  "primaryTint": "#eef2fd",
+  "secondaryTint": "#eaebef",
+  "errorBackground": "#feeff0",
+  "successBackground": "#f0f9f6"
 }
