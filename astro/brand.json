@@ -1,15 +1,18 @@
 {
+  "$schema": "https://embed.coras.io/brand.schema.json",
   "schemaVersion": 1,
   "primary": "#4657d4",
   "secondary": "#161c44",
-  "textButton": "#ffffff",
+  "button": {
+    "textButton": "#ffffff"
+  },
   "font": "Inter, sans-serif",
+  "status": {
+    "error": "#c9224a",
+    "errorBackground": "#feeff0",
+    "success": "#00ad8f",
+    "successBackground": "#f0f9f6"
+  },
   "logo": "https://assets.sandbox.coras.io/brands/example/assets/images/logo.svg",
-  "logoDark": "https://assets.sandbox.coras.io/brands/example/assets/images/logo-dark.svg",
-  "success": "#00ad8f",
-  "error": "#c9224a",
-  "primaryTint": "#eef2fd",
-  "secondaryTint": "#eaebef",
-  "errorBackground": "#feeff0",
-  "successBackground": "#f0f9f6"
+  "logoDark": "https://assets.sandbox.coras.io/brands/example/assets/images/logo-dark.svg"
 }
