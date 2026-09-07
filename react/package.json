@@ -10,7 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@coras-io/embed": "^0.4.0",
+    "@coras-io/embed": "^0.5.0",
     "@tanstack/react-router": "1.170.16",
     "react": "19.2.7",
     "react-dom": "19.2.7",
