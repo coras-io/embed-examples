@@ -43,6 +43,7 @@
     const { mount } = await import("@coras-io/embed");
     app = mount({
       container,
+      strict: true,
       page,
       params,
       config,

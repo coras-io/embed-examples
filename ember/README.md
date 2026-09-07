@@ -46,6 +46,8 @@ the shell). See `.env.example`.
   no loop.
 - Theming from a committed [`brand.json`](brand.json), passed once as
   `config.theme` - the SDK themes only from `config.theme`, never from the API.
+- `strict: true` on the mount, so an unknown option or param key fails
+  loudly here rather than being ignored.
 - Projecting a host-owned logo into the SDK navbar `brand` slot through the
   `chrome` option.
 

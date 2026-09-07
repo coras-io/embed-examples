@@ -76,6 +76,7 @@ function renderTickets(href: string): void {
   main.append(target);
   app = mount({
     container: target,
+    strict: true,
     page,
     params,
     config: buildConfig(),

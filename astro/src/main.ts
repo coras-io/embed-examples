@@ -42,6 +42,7 @@ function syncUrl(
 // navbar, footer, and chrome stay in place and only the page content swaps.
 const app: CorasApp = mount({
   container,
+  strict: true,
   page: initial.page,
   params: initial.params,
   config: buildConfig(),

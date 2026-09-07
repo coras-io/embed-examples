@@ -59,6 +59,7 @@ export class CorasMountComponent
   ngAfterViewInit(): void {
     this.app = mount({
       container: this.container.nativeElement,
+      strict: true,
       page: this.page,
       params: this.params,
       config: this.config,

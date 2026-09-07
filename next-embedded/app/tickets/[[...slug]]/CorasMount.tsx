@@ -66,6 +66,7 @@ export function CorasMount() {
 
     const app = mount({
       container,
+      strict: true,
       page,
       params,
       config: buildConfig(),

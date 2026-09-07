@@ -41,6 +41,7 @@ onMounted(() => {
   if (!container.value) return;
   app = mount({
     container: container.value,
+    strict: true,
     page: props.page,
     params: props.params,
     config: props.config,

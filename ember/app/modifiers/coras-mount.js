@@ -37,6 +37,7 @@ export default class CorasMount extends Modifier {
 
     this.#app = mount({
       container: element,
+      strict: true,
       page: named.page,
       params: named.params,
       config: named.config,

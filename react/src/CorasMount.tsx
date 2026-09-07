@@ -39,6 +39,7 @@ export function CorasMount<P extends CorasPageName>(
 
     const app = mount({
       container,
+      strict: true,
       page: propsRef.current.page,
       config: propsRef.current.config,
       params: propsRef.current.params,
