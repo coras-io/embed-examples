@@ -5,8 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "ng serve",
-    "build": "cross-env NG_BUILD_OPTIMIZE_CHUNKS=false ng build",
-    "preview": "cross-env NG_BUILD_OPTIMIZE_CHUNKS=false ng serve --configuration production"
+    "build": "ng build",
+    "preview": "ng serve --configuration production"
   },
   "dependencies": {
     "@angular/common": "^22.0.0",
@@ -14,7 +14,7 @@
     "@angular/core": "^22.0.0",
     "@angular/platform-browser": "^22.0.0",
     "@angular/router": "^22.0.0",
-    "@coras-io/embed": "^0.5.1",
+    "@coras-io/embed": "^0.6.0",
     "rxjs": "^7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.16.0"
@@ -23,7 +23,6 @@
     "@angular-devkit/build-angular": "^22.0.0",
     "@angular/cli": "^22.0.0",
     "@angular/compiler-cli": "^22.0.0",
-    "cross-env": "^7.0.3",
     "typescript": "6.0.3"
   }
 }

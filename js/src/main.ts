@@ -4,17 +4,19 @@ import {
   type CorasNavigateDetail,
   type CorasStateChangeDetail,
 } from "@coras-io/embed";
-import { buildConfig, chrome, logo, url } from "./coras.ts";
+import {
+  buildConfig,
+  chrome,
+  DEFAULT_CURRENCY,
+  DEFAULT_LOCALE,
+  logo,
+  url,
+} from "./coras.ts";
 
 const container = document.getElementById("app")!;
 
-// Derive the initial page + params from the URL, so a deep link or a refresh
-// lands on the right page rather than always the landing page.
 const initial = url.parse(location.href);
 
-// Host owns routing. Turn a navigation *intent* from the SDK into a real URL,
-// push it to the browser, then reflect it back into the mounted app. `update`
-// re-renders in place without re-emitting `onNavigate`, so there is no loop.
 function syncUrl(
   detail: CorasNavigateDetail | CorasStateChangeDetail,
   replace: boolean,
@@ -31,33 +33,39 @@ function syncUrl(
   });
   history[replace ? "replaceState" : "pushState"](null, "", href);
   const next = url.parse(href);
-  app.update({ page: next.page, params: next.params });
+  app.update({
+    page: next.page,
+    params: next.params,
+    config: buildConfig(
+      next.locale ?? DEFAULT_LOCALE,
+      next.currency ?? DEFAULT_CURRENCY,
+    ),
+  });
 }
 
-// One persistent mount for every page. Route changes call `app.update()`, so the
-// navbar, footer, and chrome stay in place and only the page content swaps.
 const app: CorasApp = mount({
   container,
   strict: true,
   page: initial.page,
   params: initial.params,
-  config: buildConfig(),
+  config: buildConfig(
+    initial.locale ?? DEFAULT_LOCALE,
+    initial.currency ?? DEFAULT_CURRENCY,
+  ),
   chrome,
-  // A link/selection to another page: push a new history entry.
   onNavigate: (intent) => syncUrl(intent, false),
-  // An in-page state change (e.g. a filter): reflect it without a new entry.
   onStateChange: (state) => syncUrl(state, true),
 });
 
-// Back / forward: re-read the URL and update the mounted app in place.
 addEventListener("popstate", () => {
-  const { page, params } = url.parse(location.href);
-  app.update({ page, params });
+  const { page, params, locale, currency } = url.parse(location.href);
+  app.update({
+    page,
+    params,
+    config: buildConfig(locale ?? DEFAULT_LOCALE, currency ?? DEFAULT_CURRENCY),
+  });
 });
 
-// The navbar logo is a home link. A slotted brand element owns its own
-// navigation, so wire its click to the landing page for the URL's current
-// locale/currency.
 logo.addEventListener("click", () => {
   const { locale, currency } = url.parse(location.href);
   syncUrl({ page: "landing", params: {}, locale, currency }, false);

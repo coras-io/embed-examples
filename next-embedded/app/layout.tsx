@@ -7,9 +7,6 @@ export const metadata: Metadata = {
   title: "Riverside Live - Coras Embed (Next.js embedded example)",
 };
 
-// The host app's own chrome: a navbar and footer that stay on every route.
-// Coras renders none of this - `chrome: false` in the mount means the SDK
-// draws page content only, inside the <main> content region below.
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
@@ -25,7 +22,6 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           </nav>
         </header>
 
-        {/* The host's content region. Host pages render here; so does Coras. */}
         <main className="host-main">{children}</main>
 
         <footer className="host-footer">

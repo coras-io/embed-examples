@@ -1,9 +1,6 @@
 import * as v from "valibot";
 import { createFileRoute } from "@tanstack/react-router";
 
-// The page is rendered by the persistent mount in `$locale.$currency.tsx`; this
-// route only declares the landing URL's search contract and metadata.
-
 const sortOptions = ["popularity", "lowest_price", "rating"] as const;
 
 const searchParamsSchema = v.object({

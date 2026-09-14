@@ -21,7 +21,9 @@ content with no configuration. Open the URL Vite prints.
 
 To point at a different backend, copy `.env.example` to `.env` and fill in any of
 the values (all optional): `VITE_API_HOST` (default `https://sandbox.coras.io`),
-`VITE_DISTRIBUTOR_ID`, `VITE_ASSETS_URL` (default `https://assets.sandbox.coras.io/shared`).
+`VITE_DISTRIBUTOR_ID`, `VITE_ASSETS_URL` (default
+`https://assets.sandbox.coras.io/shared`), and `VITE_ALLOWED_HOSTS`
+(comma-separated extra hosts for the dev server).
 
 ## What it demonstrates
 

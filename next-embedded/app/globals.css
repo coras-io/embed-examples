@@ -1,9 +1,3 @@
-/*
-  This CSS styles the HOST app's own shell only - its navbar, footer and plain
-  pages. It never targets Coras elements: the embed is themed entirely by
-  brand.json (config.theme). This is the host chrome that Coras sits inside in
-  embedded mode.
-*/
 :root {
   font-family: system-ui, sans-serif;
   --host-ink: #161c44;
@@ -42,8 +36,6 @@ body {
   text-decoration: none;
 }
 
-/* Coras mounts inside .host-main. The host gives it a content region, not the
-   whole viewport. */
 .host-main {
   flex: 1 0 auto;
 }

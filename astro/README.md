@@ -51,12 +51,12 @@ browser:
 
 ## How the integration fits together
 
-| File                                                         | Role                                                                                       |
-| ------------------------------------------------------------ | ------------------------------------------------------------------------------------------ |
-| [`src/pages/[...path].astro`](src/pages/%5B...path%5D.astro) | The single static page: a `#app` container plus the client `<script>` that owns the mount. |
-| [`src/main.ts`](src/main.ts)                                 | Mounts once and keeps the URL and the mounted app in sync via the History API.             |
-| [`src/coras.ts`](src/coras.ts)                               | Builds the SDK config and chrome, and the shared URL strategy.                             |
-| [`brand.json`](brand.json)                                   | The theme (colours, fonts, logo) passed to the SDK as `config.theme`.                      |
+| File                                                         | Role                                                                                                              |
+| ------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------- |
+| [`src/pages/[...path].astro`](src/pages/%5B...path%5D.astro) | The single static page: a `#app` container, the standalone reset, plus the client `<script>` that owns the mount. |
+| [`src/main.ts`](src/main.ts)                                 | Mounts once and keeps the URL and the mounted app in sync via the History API.                                    |
+| [`src/coras.ts`](src/coras.ts)                               | Builds the SDK config and chrome, and the shared URL strategy.                                                    |
+| [`brand.json`](brand.json)                                   | The theme (colours, fonts, logo) passed to the SDK as `config.theme`.                                             |
 
 ## Static output & client-side rendering (SSR caveats)
 

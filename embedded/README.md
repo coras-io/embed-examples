@@ -36,7 +36,8 @@ navbar and footer stay put while Coras renders inside them. Click **Home** or
 The example ships pointed at the public Coras sandbox and CDN, so it renders real
 content with no configuration. To point at a different backend, copy
 `.env.example` to `.env` and fill in any of the values (all optional):
-`VITE_API_HOST`, `VITE_DISTRIBUTOR_ID`, `VITE_ASSETS_URL`.
+`VITE_API_HOST`, `VITE_DISTRIBUTOR_ID`, `VITE_ASSETS_URL`, and
+`VITE_ALLOWED_HOSTS` (comma-separated extra hosts for the dev server).
 
 ## How the integration fits together
 

@@ -1,4 +1,3 @@
-// A plain host page - a server component with no Coras involvement.
 export default function AboutPage() {
   return (
     <article className="host-page">

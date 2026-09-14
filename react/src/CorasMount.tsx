@@ -16,14 +16,6 @@ type CorasMountProps<P extends CorasPageName> = {
   chrome?: CorasChrome;
 } & CorasCallbacks;
 
-/**
- * Thin React wrapper around the SDK `mount()` contract. It mounts once, keeps
- * the latest callbacks in a ref (so identity changes do not remount), updates
- * the app when page/params/config change, and tears the app down on unmount.
- *
- * This is host integration code, not a published wrapper: every framework uses
- * the same `mount()`/`update()`/`unmount()` API (ADR 0002).
- */
 export function CorasMount<P extends CorasPageName>(
   props: CorasMountProps<P>,
 ): React.ReactElement {
@@ -32,7 +24,6 @@ export function CorasMount<P extends CorasPageName>(
   const propsRef = useRef(props);
   propsRef.current = props;
 
-  // Mount once; route callbacks through the ref so the latest handler runs.
   useEffect(() => {
     const container = containerRef.current;
     if (!container) return;
@@ -61,7 +52,6 @@ export function CorasMount<P extends CorasPageName>(
     };
   }, []);
 
-  // Reflect page/params/config changes without remounting.
   useEffect(() => {
     appRef.current?.update({
       page: props.page,
@@ -71,5 +61,5 @@ export function CorasMount<P extends CorasPageName>(
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.page, JSON.stringify(props.params), JSON.stringify(props.config)]);
 
-  return <div ref={containerRef} />;
+  return <div ref={containerRef} style={{ display: "contents" }} />;
 }

@@ -1,7 +1,6 @@
 import {
   AfterViewInit,
   Component,
-  CUSTOM_ELEMENTS_SCHEMA,
   ElementRef,
   EventEmitter,
   Input,
@@ -21,21 +20,16 @@ import {
   type CorasStateChangeDetail,
 } from "@coras-io/embed";
 
-/**
- * Thin Angular wrapper around the SDK `mount()` contract. It mounts once in
- * `ngAfterViewInit` (the SDK renders web components, so it must run in the
- * browser after the host element exists - never during SSR), reflects
- * page/params/config changes with `app.update()` (never a remount), and tears
- * the app down in `ngOnDestroy`.
- *
- * This is host integration code, not a published wrapper: every framework uses
- * the same `mount()` / `update()` / `unmount()` API.
- */
 @Component({
   selector: "coras-mount",
   standalone: true,
-  schemas: [CUSTOM_ELEMENTS_SCHEMA],
   template: `<div #container></div>`,
+  styles: `
+    :host,
+    div {
+      display: contents;
+    }
+  `,
 })
 export class CorasMountComponent
   implements AfterViewInit, OnChanges, OnDestroy
@@ -45,9 +39,6 @@ export class CorasMountComponent
   @Input({ required: true }) config!: CorasConfig;
   @Input() chrome?: CorasChrome;
 
-  // The host owns routing: the SDK reports intent, the parent turns it into a
-  // real navigation. `update` does not re-emit these, so feeding a URL-derived
-  // page back in cannot loop.
   @Output() navigate = new EventEmitter<CorasNavigateDetail>();
   @Output() stateChange = new EventEmitter<CorasStateChangeDetail>();
 
@@ -70,9 +61,6 @@ export class CorasMountComponent
   }
 
   ngOnChanges(): void {
-    // The first change set arrives before `ngAfterViewInit`, when the app does
-    // not exist yet - the initial state is passed straight to `mount()` there.
-    // Every later change reflects in place.
     this.app?.update({
       page: this.page,
       params: this.params,

@@ -1,8 +1,6 @@
 import * as v from "valibot";
 import { createFileRoute } from "@tanstack/react-router";
 
-// Rendered by the persistent mount in `$locale.$currency.tsx`.
-
 const searchParamsSchema = v.object({
   content: v.optional(v.string()),
 });

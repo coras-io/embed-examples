@@ -7,8 +7,6 @@ import { LocaleCurrencyLayoutComponent } from "./locale-currency-layout.componen
 
 export const routes: Routes = [
   {
-    // Detect the visitor's locale/currency once, then redirect into the
-    // locale-scoped routes where everything real is mounted.
     path: "",
     pathMatch: "full",
     canActivate: [
@@ -21,10 +19,6 @@ export const routes: Routes = [
     children: [],
   },
   {
-    // One layout owns the single persistent mount for every page below it. The
-    // child routes only declare the URL shape (`landing` = root, `search`,
-    // `payment`, `help`, and `details` = a bare id segment) - the mount reads
-    // the URL and renders the matching page, so navigating updates in place.
     path: ":locale/:currency",
     component: LocaleCurrencyLayoutComponent,
     children: [

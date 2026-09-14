@@ -1,4 +1,5 @@
 import Component from '@glimmer/component';
+import { cached } from '@glimmer/tracking';
 import { service } from '@ember/service';
 import { registerDestructor } from '@ember/destroyable';
 import CorasMount from '../modifiers/coras-mount';
@@ -15,13 +16,6 @@ import {
  * @import RouterService from '@ember/routing/router-service'
  */
 
-/**
- * Holds the single persistent mount for every page under `/:locale/:currency`.
- * The page, params, locale, and currency are derived straight from the URL, so
- * navigating between child routes (or using back/forward) recomputes them and
- * updates the mount in place - the navbar, footer, and chrome stay put and only
- * the page content swaps.
- */
 export default class CorasEmbed extends Component {
   /** @type {RouterService} */
   @service router;
@@ -30,9 +24,6 @@ export default class CorasEmbed extends Component {
 
   constructor(...args) {
     super(...args);
-    // The navbar logo is a home link. A slotted brand element owns its own
-    // navigation, so wire its click to the landing page for the current
-    // locale/currency; remove the listener when the component is torn down.
     logo.addEventListener('click', this.goToLanding);
     registerDestructor(this, () =>
       logo.removeEventListener('click', this.goToLanding),
@@ -44,8 +35,7 @@ export default class CorasEmbed extends Component {
     handleNavigate(this.router, { page: 'landing', params: {}, locale, currency });
   };
 
-  // `router.currentURL` is tracked, so this getter - and everything derived from
-  // it - recomputes on every transition and drives `app.update()`.
+  @cached
   get state() {
     return corasUrl.parse(this.router.currentURL ?? '/');
   }
@@ -68,6 +58,7 @@ export default class CorasEmbed extends Component {
 
   <template>
     <div
+      style="display: contents"
       {{CorasMount
         page=this.page
         params=this.params

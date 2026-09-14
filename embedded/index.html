@@ -4,12 +4,6 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Riverside Live - Coras Embed (embedded example)</title>
-    <!--
-      This CSS styles the HOST app's own shell only - its navbar, footer and
-      plain pages. It never targets Coras elements: the embed is themed entirely
-      by brand.json (config.theme). This is the host chrome that Coras sits
-      inside in embedded mode.
-    -->
     <style>
       :root {
         font-family: system-ui, sans-serif;
@@ -47,7 +41,6 @@
         text-decoration: underline;
         text-underline-offset: 4px;
       }
-      /* Coras mounts here. The host gives it a content region, not the viewport. */
       #app {
         flex: 1 0 auto;
       }
@@ -74,7 +67,6 @@
       </nav>
     </header>
 
-    <!-- The host's content region. Host pages render here; so does Coras. -->
     <main id="app"></main>
 
     <footer class="host-footer">© Riverside Live - a host-owned footer</footer>

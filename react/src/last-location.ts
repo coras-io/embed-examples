@@ -1,13 +1,3 @@
-/**
- * Last landing-page location the user looked at, persisted in `localStorage`.
- *
- * The URL stays the source of truth for the current view (shareable, deep
- * linkable, back/forward works). This is purely a fallback so the landing
- * page can restore the previous selection when the user returns via a link
- * that does not carry country/city - instead of falling back to geolocation
- * and silently resetting their choice.
- */
-
 const STORAGE_KEY = "coras-last-location";
 
 export type LastLocation = { country?: string; city?: string };
@@ -29,15 +19,10 @@ export function setLastLocation(value: LastLocation): void {
   try {
     window.localStorage.setItem(STORAGE_KEY, JSON.stringify(value));
   } catch {
-    // Storage quota exceeded or disabled - silently skip.
+    // Quota exceeded or storage disabled; the stored hint is optional.
   }
 }
 
-/**
- * Seed landing params from the stored last location only when the URL carries
- * neither country nor city. URL-supplied values always win so shared links and
- * back/forward keep working.
- */
 export function withStoredLocation(
   params: Record<string, unknown> | undefined,
 ): Record<string, unknown> {

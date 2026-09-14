@@ -75,7 +75,8 @@ pnpm build   # vite build → dist/
   current Ember app blueprint - no webpack, no `ember-auto-import`.
 - **Client-only.** The SDK renders web components in the browser; the mount
   happens in an element modifier once the DOM exists, and tears down when the
-  element is destroyed. There is no FastBoot/SSR.
+  element is destroyed. There is no FastBoot/SSR, and `config/targets.js` lists
+  evergreen browsers only.
 - **Plain JavaScript + `.gjs`.** Components and templates use the strict
   template-tag format; the app is authored in JS (with JSDoc types pulling in the
   SDK's TypeScript types) to keep the toolchain light.

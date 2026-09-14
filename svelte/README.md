@@ -69,6 +69,10 @@ client-rendered SPA:
   `load`. `src/lib/coras.ts` creates the logo `<img>` lazily in `buildChrome()`
   (called from the client-only mount) so importing the module never touches
   `document`.
+- `vite.config.ts` marks `@coras-io/embed` external to the SSR build. SvelteKit
+  still runs an SSR pass to build the prerendered shell, and the SDK reaches
+  Node-oriented dependencies (the optional crypto and wallet libraries) that the
+  SSR bundler cannot resolve. The client build bundles it normally.
 - `svelte.config.js` uses `@sveltejs/adapter-static` with an `index.html`
   fallback, so `pnpm build` emits static files for an S3/CDN bucket and the client
   router owns every `/:locale/:currency/...` route. **Point the bucket's

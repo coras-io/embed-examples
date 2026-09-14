@@ -23,7 +23,8 @@ the SDK chrome.
 To point at a different backend, edit
 [`src/environments/environment.ts`](src/environments/environment.ts) - Angular
 has no `import.meta.env`, so this example takes its overrides from that file
-(each value is optional and falls back to the public default):
+(each value is optional and falls back to the public default). For per-deployment
+values, wire up Angular's `fileReplacements` to swap the file at build time:
 
 | Field           | Default                                  | Purpose                                       |
 | --------------- | ---------------------------------------- | --------------------------------------------- |
@@ -69,8 +70,7 @@ has no `import.meta.env`, so this example takes its overrides from that file
 - **Client-side SPA only** (the [application
   builder](https://angular.dev/tools/cli/build), `@angular-devkit/build-angular:application`,
   no SSR). The SDK renders web components in the browser, so the mount runs in
-  `ngAfterViewInit`, never on a server. `CorasMountComponent` also declares
-  `CUSTOM_ELEMENTS_SCHEMA`.
+  `ngAfterViewInit`, never on a server.
 - The mount reads the current view from the URL on every `NavigationEnd`, so
   navigating between child routes updates the one mount in place rather than
   recreating it.
@@ -82,7 +82,11 @@ pnpm build     # ng build
 pnpm preview   # serve with production optimizations
 ```
 
-Both production scripts set `NG_BUILD_OPTIMIZE_CHUNKS=false`. Angular's
-experimental chunk optimizer re-bundles the SDK's emitted chunks through Rollup,
-which rejects a `super` reference in that output (`Invalid access to super`).
-Disabling the pass only skips merging lazy chunks; it has no effect on behaviour.
+`angular.json` lists `react` under `build.options.externalDependencies`. That is
+a build-tool workaround for an optional peer dependency, not part of the Coras
+integration: the SDK lazily loads `@coinbase/cdp-core` for crypto payments, which
+pulls in `zustand`, whose entry re-exports a React binding. `react` is an
+optional peer that a plain Angular app does not install, so without the entry the
+builder stops with `Could not resolve "react"`. Marking it external leaves the
+import unbundled in a lazy chunk the app does not load at start-up. Drop the
+entry if a future SDK release stops reaching that dependency.

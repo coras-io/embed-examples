@@ -1,6 +1,5 @@
 import Link from "next/link";
 
-// A plain host page - a server component with no Coras involvement.
 export default function HomePage() {
   return (
     <article className="host-page">

@@ -11,14 +11,6 @@ import {
   type CorasStateChangeDetail,
 } from "@coras-io/embed";
 
-/**
- * Thin Vue wrapper around the SDK `mount()` contract. It mounts once in
- * `onMounted`, reflects page/params/config changes with `app.update()` (never a
- * remount), and tears the app down in `onUnmounted`.
- *
- * This is host integration code, not a published wrapper: every framework uses
- * the same `mount()` / `update()` / `unmount()` API.
- */
 const props = defineProps<{
   page: CorasPageName;
   params?: CorasPageParams;
@@ -26,9 +18,6 @@ const props = defineProps<{
   chrome?: CorasChrome;
 }>();
 
-// The host owns routing: the SDK reports intent, the parent turns it into a
-// real navigation. `emit` identity is stable, so the mount's callbacks always
-// reach the latest handler without re-mounting.
 const emit = defineEmits<{
   navigate: [detail: CorasNavigateDetail];
   stateChange: [detail: CorasStateChangeDetail];
@@ -51,8 +40,6 @@ onMounted(() => {
   });
 });
 
-// Reflect page/params/config changes in place. `update` does not re-emit
-// `onNavigate`, so feeding a URL-derived page back in cannot loop.
 watch(
   () => [props.page, props.params, props.config],
   () => {
@@ -72,5 +59,5 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div ref="container" />
+  <div ref="container" style="display: contents" />
 </template>

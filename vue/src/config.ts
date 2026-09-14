@@ -1,11 +1,5 @@
 import type { SupportedCurrencies, SupportedLocales } from "@coras-io/embed";
 
-/**
- * Supported locales and currencies, and the defaults used when the visitor's
- * own preference cannot be detected. The lists are handed to the SDK as
- * `allowedLocales` / `allowedCurrencies`, so its built-in switchers only ever
- * offer values this host is prepared to route.
- */
 export const config: {
   currency: SupportedCurrencies;
   currencies: SupportedCurrencies[];

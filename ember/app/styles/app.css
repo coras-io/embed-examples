@@ -1,7 +1,11 @@
-/* The SDK styles itself from `config.theme`; the host only needs the page to
-   fill the viewport so the embedded navbar, content, and footer lay out. */
 html,
 body {
+  height: 100%;
   margin: 0;
-  min-height: 100vh;
+  padding: 0;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
 }

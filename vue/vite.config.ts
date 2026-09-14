@@ -6,11 +6,6 @@ import { fileURLToPath } from "url";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-// In the monorepo the SDK is a workspace link, so the app and the linked
-// `@coras-io/embed` can resolve different copies of lit; we force a single
-// instance below. A standalone clone consumes the pre-bundled npm build, where
-// lit is internal and this does not apply - detected by the absence of the
-// sibling package, so the same config works in both places with no flag.
 const embedDeps = path.resolve(
   __dirname,
   "../../../packages/embed/node_modules",

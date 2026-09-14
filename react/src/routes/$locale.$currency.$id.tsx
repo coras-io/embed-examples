@@ -1,9 +1,6 @@
 import * as v from "valibot";
 import { createFileRoute } from "@tanstack/react-router";
 
-// Rendered by the persistent mount in `$locale.$currency.tsx`; this route owns
-// the `id` path segment and the details URL's search contract.
-
 const routeParamsSchema = v.object({
   id: v.string(),
 });
