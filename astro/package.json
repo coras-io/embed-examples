@@ -10,7 +10,7 @@
     "astro": "astro"
   },
   "dependencies": {
-    "@coras-io/embed": "^0.6.3"
+    "@coras-io/embed": "^0.6.4"
   },
   "devDependencies": {
     "astro": "7.0.5",
