@@ -9,7 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@coras-io/embed": "^0.6.1"
+    "@coras-io/embed": "^0.6.2"
   },
   "devDependencies": {
     "typescript": "6.0.3",
