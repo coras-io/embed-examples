@@ -11,7 +11,7 @@
     "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json"
   },
   "dependencies": {
-    "@coras-io/embed": "^0.6.9"
+    "@coras-io/embed": "^0.6.10"
   },
   "devDependencies": {
     "@sveltejs/adapter-static": "^3",

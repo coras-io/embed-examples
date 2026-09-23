@@ -9,7 +9,7 @@
     "start": "next start"
   },
   "dependencies": {
-    "@coras-io/embed": "^0.6.9",
+    "@coras-io/embed": "^0.6.10",
     "next": "16.3.4",
     "react": "19.2.7",
     "react-dom": "19.2.7"
