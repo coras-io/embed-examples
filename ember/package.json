@@ -13,7 +13,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@coras-io/embed": "^0.6.8"
+    "@coras-io/embed": "^0.6.9"
   },
   "devDependencies": {
     "@babel/core": "^7.29.7",
