@@ -25,6 +25,7 @@ export const config: {
     "NOK",
     "PHP",
     "PLN",
+    "SAR",
     "SEK",
     "SGD",
     "THB",
@@ -34,6 +35,7 @@ export const config: {
   ],
   locale: "en-IE",
   locales: [
+    "ar-SA",
     "da-DK",
     "de-DE",
     "en-GB",
