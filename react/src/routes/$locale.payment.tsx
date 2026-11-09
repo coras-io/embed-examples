@@ -3,7 +3,7 @@ import { createFileRoute } from "@tanstack/react-router";
 
 const searchParamsSchema = v.object({});
 
-export const Route = createFileRoute("/$locale/$currency/payment")({
+export const Route = createFileRoute("/$locale/payment")({
   component: () => null,
   validateSearch: searchParamsSchema,
   head: () => ({

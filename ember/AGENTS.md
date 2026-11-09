@@ -8,10 +8,10 @@ This is a working standalone integration of `@coras-io/embed` in an Ember app on
 | -------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------- |
 | `app/modifiers/coras-mount.js`   | The element modifier over `mount()` / `update()` / `unmount()`.                                                                          | Copy as is.                   |
 | `app/components/coras-embed.gjs` | Derives `page`, `params`, and `config` from `router.currentURL` and applies the modifier; wires the logo click.                          | Copy as is.                   |
-| `app/templates/embed.gjs`        | The `/:locale/:currency` template that renders the one persistent mount.                                                                 | Copy as is.                   |
+| `app/templates/embed.gjs`        | The `/:locale` template that renders the one persistent mount.                                                                           | Copy as is.                   |
 | `app/coras.js`                   | The SDK config, chrome with the host logo, the shared URL strategy, and `handleNavigate` / `handleStateChange` over the `RouterService`. | Copy as is.                   |
-| `app/router.js`                  | The `embed` route at `/:locale/:currency` with `search`, `help`, `payment`, and `details` (`/:id`) children.                             | Merge into your router map.   |
-| `app/routes/index.js`            | Redirects `/` to the default `/:locale/:currency`.                                                                                       | Copy as is.                   |
+| `app/router.js`                  | The `embed` route at `/:locale` with `search`, `help`, `payment`, and `details` (`/:id`) children.                                       | Merge into your router map.   |
+| `app/routes/index.js`            | Redirects `/` to the default `/:locale`.                                                                                                 | Copy as is.                   |
 | `config/environment.js`          | The `coras` block: `apiUrl`, `distributorId`, `assetsUrl`.                                                                               | Merge into your environment.  |
 | `brand.json`                     | The theme, passed once as `config.theme`.                                                                                                | Replace with your brand file. |
 
@@ -29,7 +29,7 @@ None. Everything here is part of the integration.
 
 ## Routes this example declares
 
-`/` redirects to the default `/:locale/:currency`. Under it: the index (landing), `search`, `payment`, `help`, and `details` at `/:id`. The bare id segment is the SDK's default shape for a details URL. The child routes have no templates; the mounted app reads the URL.
+`/` redirects to the default `/:locale`. Under it: the index (landing), `search`, `payment`, `help`, and `details` at `/:id`. The bare id segment is the SDK's default shape for a details URL. The currency is a `currency` query param, present only when it is not the locale's default. The child routes have no templates; the mounted app reads the URL.
 
 ## Notes
 

@@ -17,7 +17,7 @@ pnpm dev
 
 That's it - the example ships pointed at the public Coras sandbox and CDN, so it
 renders real content with no configuration. Open the URL Angular prints; the root
-path redirects to `/:locale/:currency` and renders the Coras landing page inside
+path redirects to `/:locale` and renders the Coras landing page inside
 the SDK chrome.
 
 To point at a different backend, edit
@@ -34,12 +34,14 @@ values, wire up Angular's `fileReplacements` to swap the file at build time:
 
 ## What it demonstrates
 
-- A single persistent `mount()` for every page under `/:locale/:currency`. Route
+- A single persistent `mount()` for every page under `/:locale`, with the currency as a `currency` query param only when it is not the locale's default (the URL shape the Coras hosts share and the one we recommend; the SDK default `/:locale` stays available). Route
   changes call `app.update()`, so the navbar, footer, and chrome stay in place
   and only the page content swaps.
-- Host-owned routing: the SDK reports navigation intent through `onNavigate` and
-  `onStateChange`, and the app maps those to Angular Router navigations
-  (`navigateByUrl` for a link, `replaceUrl: true` for an in-page state change).
+- Host-owned routing: `createCorasRouting` from the SDK URL helper gives the
+  mount its `hrefFor`, `onNavigate` and `onStateChange`, and the app maps the
+  built URLs to Angular Router navigations (`navigateByUrl` for a link,
+  `replaceUrl: true` for an in-page state change). With `hrefFor` the embed's
+  cards, breadcrumbs, logo and footer links render as real links.
 - Reading the current page and params from the URL with the SDK URL helper, then
   feeding them back into `mount()` / `update()` - so deep links and back/forward
   work.

@@ -2,13 +2,12 @@
 
 import { useEffect, useRef } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { mount, type CorasApp } from "@coras-io/embed";
 import {
-  mount,
-  type CorasApp,
-  type CorasNavigateDetail,
-  type CorasStateChangeDetail,
-} from "@coras-io/embed";
-import { buildCorasUrl, parseCorasUrl } from "@coras-io/embed/url";
+  buildCorasUrl,
+  createCorasRouting,
+  parseCorasUrl,
+} from "@coras-io/embed/url";
 import { buildConfig, chrome, ticketsUrlStrategy } from "./coras";
 
 export function CorasMount() {
@@ -25,21 +24,15 @@ export function CorasMount() {
     const container = containerRef.current;
     if (!container) return;
 
-    const syncCoras = (
-      detail: CorasNavigateDetail | CorasStateChangeDetail,
-      replace: boolean,
-    ): void => {
-      if ("href" in detail && detail.href) {
-        window.open(detail.href, "_blank", "noopener,noreferrer");
-        return;
-      }
-      const to = buildCorasUrl(
-        { page: detail.page, params: detail.params ?? {} },
-        ticketsUrlStrategy,
-      );
-      if (replace) routerRef.current.replace(to);
-      else routerRef.current.push(to);
-    };
+    // Locale and currency are fixed in `config`, so a URL carries page and params only.
+    const routing = createCorasRouting({
+      url: {
+        build: ({ page, params }) =>
+          buildCorasUrl({ page, params }, ticketsUrlStrategy),
+      },
+      navigate: (href) => routerRef.current.push(href),
+      replace: (href) => routerRef.current.replace(href),
+    });
 
     const { page, params } = parseCorasUrl(
       window.location.pathname + window.location.search,
@@ -53,8 +46,7 @@ export function CorasMount() {
       params,
       config: buildConfig(),
       chrome,
-      onNavigate: (intent) => syncCoras(intent, false),
-      onStateChange: (state) => syncCoras(state, true),
+      ...routing,
     });
     appRef.current = app;
 

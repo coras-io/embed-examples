@@ -7,7 +7,7 @@ export default class Router extends EmberRouter {
 }
 
 Router.map(function () {
-  this.route('embed', { path: '/:locale/:currency' }, function () {
+  this.route('embed', { path: '/:locale' }, function () {
     this.route('search');
     this.route('help');
     this.route('payment');

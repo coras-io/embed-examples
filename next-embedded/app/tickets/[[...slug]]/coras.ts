@@ -19,8 +19,7 @@ export const chrome: CorasChrome = false;
 export function buildConfig(): CorasConfig {
   return {
     apiUrl: process.env.NEXT_PUBLIC_API_HOST || "https://sandbox.coras.io",
-    distributorId:
-      process.env.NEXT_PUBLIC_DISTRIBUTOR_ID || site.distributorId,
+    distributorId: process.env.NEXT_PUBLIC_DISTRIBUTOR_ID || site.distributorId,
     assetsUrl:
       process.env.NEXT_PUBLIC_ASSETS_URL ||
       "https://assets.sandbox.coras.io/shared",

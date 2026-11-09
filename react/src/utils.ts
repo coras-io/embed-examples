@@ -2,12 +2,15 @@ import type { NavigateFn } from "@tanstack/react-router";
 import type {
   CorasChrome,
   CorasConfig,
-  CorasNavigateDetail,
-  CorasStateChangeDetail,
   SupportedCurrencies,
   SupportedLocales,
 } from "@coras-io/embed";
-import { createCorasUrlState } from "@coras-io/embed/url";
+import { getCurrency } from "@coras-io/embed/helpers";
+import {
+  createCorasRouting,
+  createCorasUrlState,
+  type CorasRouting,
+} from "@coras-io/embed/url";
 import { config } from "./config.ts";
 import { setLastLocation } from "./last-location.ts";
 import theme from "../brand.json";
@@ -29,7 +32,31 @@ export const corasChrome: CorasChrome = {
   footer: "managed",
 };
 
-export const corasUrl = createCorasUrlState();
+/** The site locale a URL segment names, in any case; the default for any other value. */
+export function siteLocale(segment: string): SupportedLocales {
+  const wanted = segment.toLowerCase();
+  return (
+    config.locales.find((locale) => locale.toLowerCase() === wanted) ??
+    config.locale
+  );
+}
+
+/** The currency a URL without one means: the locale's, or the configured default. */
+export function defaultCurrency(
+  locale: string = config.locale,
+): SupportedCurrencies {
+  return site.detectCurrency ? getCurrency(locale) : config.currency;
+}
+
+// The URL shape the Coras hosts share, and the one we recommend: a lower-case
+// locale segment and the currency as a query param only when it is not the
+// locale's default. The SDK default (`/en-IE/EUR/...`) and any other strategy
+// stay available.
+export const corasUrl = createCorasUrlState({
+  localeCase: "lower",
+  currencyInPath: false,
+  defaultCurrency,
+});
 
 export function buildConfig(
   locale: SupportedLocales,
@@ -39,7 +66,8 @@ export function buildConfig(
     apiUrl: import.meta.env.VITE_API_HOST || "https://sandbox.coras.io",
     distributorId: import.meta.env.VITE_DISTRIBUTOR_ID || site.distributorId,
     assetsUrl:
-      import.meta.env.VITE_ASSETS_URL || "https://assets.sandbox.coras.io/shared",
+      import.meta.env.VITE_ASSETS_URL ||
+      "https://assets.sandbox.coras.io/shared",
     theme: theme as CorasConfig["theme"],
     locale,
     allowedLocales: config.locales,
@@ -49,18 +77,7 @@ export function buildConfig(
   };
 }
 
-function toTanStackTarget(
-  page: CorasNavigateDetail["page"],
-  params: Record<string, unknown> | undefined,
-  locale: string,
-  currency: string,
-) {
-  const href = corasUrl.build({
-    page,
-    params: (params ?? {}) as never,
-    locale: locale as SupportedLocales,
-    currency: currency as SupportedCurrencies,
-  });
+function toTanStackTarget(href: string) {
   const url = new URL(href, window.location.origin);
   return {
     to: url.pathname,
@@ -68,44 +85,26 @@ function toTanStackTarget(
   };
 }
 
-export async function handleNavigate(
-  navigate: NavigateFn,
-  intent: CorasNavigateDetail,
-): Promise<void> {
-  if (intent.href) {
-    window.open(intent.href, "_blank", "noopener,noreferrer");
-    return;
-  }
-
-  const { to, search } = toTanStackTarget(
-    intent.page,
-    intent.params as Record<string, unknown> | undefined,
-    intent.locale ?? config.locale,
-    intent.currency ?? config.currency,
-  );
-
-  await navigate({ to, search: () => search, resetScroll: true });
-}
-
-export async function handleStateChange(
-  navigate: NavigateFn,
-  state: CorasStateChangeDetail,
-): Promise<void> {
-  if (state.page === "landing") {
-    const params = state.params as
-      | { country?: string; city?: string }
-      | undefined;
-    if (params?.country || params?.city) {
-      setLastLocation({ country: params.country, city: params.city });
-    }
-  }
-
-  const { to, search } = toTanStackTarget(
-    state.page,
-    state.params as Record<string, unknown> | undefined,
-    state.locale ?? config.locale,
-    state.currency ?? config.currency,
-  );
-
-  await navigate({ to, search: () => search, replace: true });
+// The routing mount options bound to TanStack Router: a navigation pushes a
+// history entry, an in-page change replaces it and remembers the location.
+export function corasRouting(navigate: NavigateFn): CorasRouting {
+  return createCorasRouting({
+    url: corasUrl,
+    navigate: (href) => {
+      const { to, search } = toTanStackTarget(href);
+      void navigate({ to, search: () => search, resetScroll: true });
+    },
+    replace: (href, state) => {
+      if (state.page === "landing") {
+        const params = state.params as
+          | { country?: string; city?: string }
+          | undefined;
+        if (params?.country || params?.city) {
+          setLastLocation({ country: params.country, city: params.city });
+        }
+      }
+      const { to, search } = toTanStackTarget(href);
+      void navigate({ to, search: () => search, replace: true });
+    },
+  });
 }

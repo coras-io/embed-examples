@@ -1,9 +1,10 @@
-import { createCorasUrlState } from '@coras-io/embed/url';
+import { getCurrency } from '@coras-io/embed/helpers';
+import { createCorasRouting, createCorasUrlState } from '@coras-io/embed/url';
 import brand from '../brand.json';
 import ENV from './config/environment';
 
 /**
- * @import { CorasChrome, CorasConfig, CorasNavigateDetail, CorasStateChangeDetail } from '@coras-io/embed'
+ * @import { CorasChrome, CorasConfig } from '@coras-io/embed'
  * @import RouterService from '@ember/routing/router-service'
  */
 
@@ -19,7 +20,25 @@ export const corasChrome = {
   footer: 'managed',
 };
 
-export const corasUrl = createCorasUrlState();
+export const DEFAULT_LOCALE = 'en-IE';
+
+/**
+ * The currency a URL without one means: the locale's.
+ * @param {string} [locale]
+ */
+export function defaultCurrency(locale = DEFAULT_LOCALE) {
+  return getCurrency(locale);
+}
+
+// The URL shape the Coras hosts share, and the one we recommend: a lower-case
+// locale segment and the currency as a query param only when it is not the
+// locale's default. The SDK default (`/en-IE/EUR/...`) and any other strategy
+// stay available.
+export const corasUrl = createCorasUrlState({
+  localeCase: 'lower',
+  currencyInPath: false,
+  defaultCurrency,
+});
 
 /**
  * @param {string} locale
@@ -39,34 +58,14 @@ export function buildConfig(locale, currency) {
 }
 
 /**
+ * The routing mount options bound to Ember's router: a navigation transitions,
+ * an in-page change replaces the current entry.
  * @param {RouterService} router
- * @param {CorasNavigateDetail} intent
  */
-export function handleNavigate(router, intent) {
-  if (intent.href) {
-    window.open(intent.href, '_blank', 'noopener,noreferrer');
-    return;
-  }
-  router.transitionTo(hrefFor(intent));
-}
-
-/**
- * @param {RouterService} router
- * @param {CorasStateChangeDetail} state
- */
-export function handleStateChange(router, state) {
-  router.replaceWith(hrefFor(state));
-}
-
-/**
- * @param {CorasNavigateDetail | CorasStateChangeDetail} detail
- * @returns {string}
- */
-function hrefFor(detail) {
-  return corasUrl.build({
-    page: detail.page,
-    params: detail.params ?? {},
-    locale: detail.locale,
-    currency: detail.currency,
+export function corasRouting(router) {
+  return createCorasRouting({
+    url: corasUrl,
+    navigate: (href) => router.transitionTo(href),
+    replace: (href) => router.replaceWith(href),
   });
 }

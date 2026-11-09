@@ -21,7 +21,8 @@ export function buildConfig(): CorasConfig {
     apiUrl: import.meta.env.VITE_API_HOST || "https://sandbox.coras.io",
     distributorId: import.meta.env.VITE_DISTRIBUTOR_ID || site.distributorId,
     assetsUrl:
-      import.meta.env.VITE_ASSETS_URL || "https://assets.sandbox.coras.io/shared",
+      import.meta.env.VITE_ASSETS_URL ||
+      "https://assets.sandbox.coras.io/shared",
     theme: theme as CorasConfig["theme"],
     locale: "en-IE",
     currency: "EUR",

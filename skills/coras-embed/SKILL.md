@@ -65,17 +65,28 @@ These hold in every example. Keep them in every port.
   twice into the same element.
 - **The host owns the URL.** Bind the helpers once with
   `createCorasUrlState(strategy)` and use them for every parse and build.
-  `onNavigate` pushes a history entry; `onStateChange` replaces the current one
-  (filters, dates, the search query, the help tab). A detail carrying `href`
-  is an external link: open it in a new tab and stop. Never hand-roll a path.
-- **Locale and currency.** Standalone: in the path (`/:locale/:currency/...`,
-  the SDK default strategy); read them from the URL into `config` on every
-  update, because the mount switches language and currency only through
-  `config`. Embedded: fixed in `config` and kept out of the path with
-  `localeInPath: false, currencyInPath: false` and a `basePath`.
+  `createCorasRouting({ url, navigate, replace })` turns them into the three
+  routing mount options: `onNavigate` pushes a history entry through
+  `navigate`; `onStateChange` replaces the current one through `replace`
+  (filters, dates, the search query, the help tab); `hrefFor` renders the
+  embed's cards, breadcrumbs, logo and footer links as real `<a href>` links
+  for crawlers. A detail carrying `href` is an external link: the helper opens
+  it in a new tab and stops. Never hand-roll a path.
+- **Locale and currency.** Standalone: the examples use the shape the Coras
+  hosts share and that we recommend, a lower-case locale segment and the
+  currency as a `currency` query param only when it is not the locale's
+  default (`createCorasUrlState({ localeCase: "lower", currencyInPath: false,
+defaultCurrency })`, so `/en-ie/abc123?currency=USD`). The SDK default
+  (`/:locale/:currency/...`) and any other strategy remain available; keep
+  the example's unless the target site already has a URL shape. Read locale
+  and currency from the URL into `config` on every update, because the mount
+  switches language and currency only through `config`. Embedded: fixed in
+  `config` and kept out of the path with `localeInPath: false,
+currencyInPath: false` and a `basePath`.
 - **The router matches the helpers.** Landing is the subtree root; `search`,
   `payment`, `help` are reserved segments; a details page is a bare id
-  segment; page params travel as query parameters. Declare every query param
+  segment; page params travel as query parameters, and so does a non-default
+  `currency`. Declare every query param
   a page reads on its route: typed routers such as TanStack drop undeclared
   search params. The list is in `references/pages.md`.
 - **Validate locale and currency leniently.** Fall back to your default; never
@@ -117,8 +128,8 @@ test tooling for it, and do not write tests.
 1. Build and typecheck; fix every error.
 2. Check the routes statically against the example: every route pattern exists
    in the router, a details id is one path segment, every listed query param is
-   declared, and `onNavigate`, `onStateChange`, and the route-change hook are
-   wired to the one mount.
+   declared, and `hrefFor`, `onNavigate`, `onStateChange`, and the route-change
+   hook are wired to the one mount.
 3. Start the dev server and confirm it serves the page without errors. If a
    browser is already available, walk it once: open the landing route, pick an
    attraction (the URL becomes the details route and only the page content
@@ -138,8 +149,9 @@ connection.
 - The project builds and typechecks, and the dev server starts clean.
 - One persistent mount drives every Coras page through `app.update()`.
 - Every URL goes through the bound helpers with the example's strategy.
-- `onNavigate` pushes, `onStateChange` replaces, `href` opens externally, and
-  locale and currency reach `config`.
+- `onNavigate` pushes, `onStateChange` replaces, `hrefFor` is passed so the
+  embed renders real links, `href` opens externally, and locale and currency
+  reach `config`.
 - One route per page in the example's shape, with its query params declared.
 - `brand.json` is the only source of styling.
 

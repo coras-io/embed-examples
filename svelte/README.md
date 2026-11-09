@@ -17,7 +17,7 @@ pnpm dev
 
 That's it - the example ships pointed at the public Coras sandbox and CDN, so it
 renders real content with no configuration. Open the URL Vite prints; the root
-path redirects to `/:locale/:currency` and renders the Coras landing page inside
+path redirects to `/:locale` and renders the Coras landing page inside
 the SDK chrome.
 
 To point at a different backend, copy `.env.example` to `.env` and fill in any of
@@ -33,12 +33,14 @@ browser:
 
 ## What it demonstrates
 
-- A single persistent `mount()` for every page under `/:locale/:currency`. Route
+- A single persistent `mount()` for every page under `/:locale`, with the currency as a `currency` query param only when it is not the locale's default (the URL shape the Coras hosts share and the one we recommend; the SDK default `/:locale` stays available). Route
   changes call `app.update()`, so the navbar, footer, and chrome stay in place
   and only the page content swaps.
-- Host-owned routing: the SDK reports navigation intent through `onNavigate` and
-  `onStateChange`, and the app maps those to `goto()` - a new history entry for a
-  navigation, a `replaceState` for an in-page state change.
+- Host-owned routing: `createCorasRouting` from the SDK URL helper gives the
+  mount its `hrefFor`, `onNavigate` and `onStateChange`, and the app maps the
+  built URLs to `goto()` - a new history entry for a navigation, a
+  `replaceState` for an in-page state change. With `hrefFor` the embed's cards,
+  breadcrumbs, logo and footer links render as real links.
 - Reading the current page and params from the URL with the SDK URL helper, then
   feeding them back into `mount()` / `update()` so deep links and back/forward
   work.
@@ -51,13 +53,13 @@ browser:
 
 ## How the integration fits together
 
-| File                                                                                             | Role                                                                    |
-| ------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------- |
-| [`src/lib/CorasMount.svelte`](src/lib/CorasMount.svelte)                                         | Svelte wrapper over `mount()` / `update()` / `unmount()`.               |
-| [`src/routes/[locale]/[currency]/+layout.svelte`](src/routes/[locale]/[currency]/+layout.svelte) | Layout holding the single persistent mount for all pages, and URL sync. |
-| [`src/lib/coras.ts`](src/lib/coras.ts)                                                           | Builds the SDK config and chrome, and the shared URL strategy.          |
-| [`src/routes/+page.ts`](src/routes/+page.ts)                                                     | Redirects `/` to a detected `/:locale/:currency`.                       |
-| [`brand.json`](brand.json)                                                                       | The theme (colours, fonts, logo) passed to the SDK as `config.theme`.   |
+| File                                                                       | Role                                                                    |
+| -------------------------------------------------------------------------- | ----------------------------------------------------------------------- |
+| [`src/lib/CorasMount.svelte`](src/lib/CorasMount.svelte)                   | Svelte wrapper over `mount()` / `update()` / `unmount()`.               |
+| [`src/routes/[locale]/+layout.svelte`](src/routes/[locale]/+layout.svelte) | Layout holding the single persistent mount for all pages, and URL sync. |
+| [`src/lib/coras.ts`](src/lib/coras.ts)                                     | Builds the SDK config and chrome, and the shared URL strategy.          |
+| [`src/routes/+page.ts`](src/routes/+page.ts)                               | Redirects `/` to a detected `/:locale`.                                 |
+| [`brand.json`](brand.json)                                                 | The theme (colours, fonts, logo) passed to the SDK as `config.theme`.   |
 
 ## Client-side rendering (SSR/SPA caveats)
 
@@ -75,7 +77,7 @@ client-rendered SPA:
   SSR bundler cannot resolve. The client build bundles it normally.
 - `svelte.config.js` uses `@sveltejs/adapter-static` with an `index.html`
   fallback, so `pnpm build` emits static files for an S3/CDN bucket and the client
-  router owns every `/:locale/:currency/...` route. **Point the bucket's
+  router owns every `/:locale/...` route. **Point the bucket's
   404/error document at `index.html`** (or a CloudFront custom error response) so
   refreshes and deep links load the SPA instead of a storage 404.
 

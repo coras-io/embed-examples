@@ -30,7 +30,7 @@ Nothing else changes. The routing glue, the mount lifecycle, and the URL strateg
 
 ## Routes this example declares
 
-`/` redirects to `/:locale/:currency`. Under it: ``(landing),`search`, `payment`, `help`, and `:id`(details), each pointing at the empty`EmbeddedPageComponent`. Page params are query parameters.
+`/` redirects to `/:locale`. Under it: ``(landing),`search`, `payment`, `help`, and `:id`(details), each pointing at the empty`EmbeddedPageComponent`. Page params are query parameters, and so is `currency`, present only when it is not the locale's default.
 
 ## Notes
 

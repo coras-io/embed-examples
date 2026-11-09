@@ -1,14 +1,10 @@
-import {
-  mount,
-  type CorasApp,
-  type CorasNavigateDetail,
-  type CorasStateChangeDetail,
-} from "@coras-io/embed";
+import { mount, type CorasApp } from "@coras-io/embed";
+import { createCorasRouting } from "@coras-io/embed/url";
 import {
   buildConfig,
   chrome,
-  DEFAULT_CURRENCY,
   DEFAULT_LOCALE,
+  defaultCurrency,
   logo,
   url,
 } from "./coras.ts";
@@ -17,20 +13,9 @@ const container = document.getElementById("app")!;
 
 const initial = url.parse(location.href);
 
-function syncUrl(
-  detail: CorasNavigateDetail | CorasStateChangeDetail,
-  replace: boolean,
-): void {
-  if ("href" in detail && detail.href) {
-    window.open(detail.href, "_blank", "noopener,noreferrer");
-    return;
-  }
-  const href = url.build({
-    page: detail.page,
-    params: detail.params ?? {},
-    locale: detail.locale,
-    currency: detail.currency,
-  });
+// The History API is the router: a navigation pushes an entry, an in-page
+// change replaces it, and either way the new URL is parsed back into the mount.
+function show(href: string, replace: boolean): void {
   history[replace ? "replaceState" : "pushState"](null, "", href);
   const next = url.parse(href);
   app.update({
@@ -38,7 +23,7 @@ function syncUrl(
     params: next.params,
     config: buildConfig(
       next.locale ?? DEFAULT_LOCALE,
-      next.currency ?? DEFAULT_CURRENCY,
+      next.currency ?? defaultCurrency(next.locale),
     ),
   });
 }
@@ -50,11 +35,14 @@ const app: CorasApp = mount({
   params: initial.params,
   config: buildConfig(
     initial.locale ?? DEFAULT_LOCALE,
-    initial.currency ?? DEFAULT_CURRENCY,
+    initial.currency ?? defaultCurrency(initial.locale),
   ),
   chrome,
-  onNavigate: (intent) => syncUrl(intent, false),
-  onStateChange: (state) => syncUrl(state, true),
+  ...createCorasRouting({
+    url,
+    navigate: (href) => show(href, false),
+    replace: (href) => show(href, true),
+  }),
 });
 
 addEventListener("popstate", () => {
@@ -62,11 +50,14 @@ addEventListener("popstate", () => {
   app.update({
     page,
     params,
-    config: buildConfig(locale ?? DEFAULT_LOCALE, currency ?? DEFAULT_CURRENCY),
+    config: buildConfig(
+      locale ?? DEFAULT_LOCALE,
+      currency ?? defaultCurrency(locale),
+    ),
   });
 });
 
 logo.addEventListener("click", () => {
   const { locale, currency } = url.parse(location.href);
-  syncUrl({ page: "landing", params: {}, locale, currency }, false);
+  show(url.build({ page: "landing", params: {}, locale, currency }), false);
 });

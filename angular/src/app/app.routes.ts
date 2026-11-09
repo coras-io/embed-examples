@@ -1,6 +1,6 @@
 import { inject } from "@angular/core";
 import { Router, Routes } from "@angular/router";
-import { getCurrency, getLocale } from "@coras-io/embed/helpers";
+import { getLocale } from "@coras-io/embed/helpers";
 import { config } from "./config";
 import { EmbeddedPageComponent } from "./embedded-page.component";
 import { LocaleCurrencyLayoutComponent } from "./locale-currency-layout.component";
@@ -10,16 +10,14 @@ export const routes: Routes = [
     path: "",
     pathMatch: "full",
     canActivate: [
-      () => {
-        const locale = getLocale(config.locale);
-        const currency = getCurrency(locale);
-        return inject(Router).createUrlTree([locale, currency]);
-      },
+      // The currency is the locale's default, so the URL does not name it.
+      () =>
+        inject(Router).createUrlTree([getLocale(config.locale).toLowerCase()]),
     ],
     children: [],
   },
   {
-    path: ":locale/:currency",
+    path: ":locale",
     component: LocaleCurrencyLayoutComponent,
     children: [
       { path: "", component: EmbeddedPageComponent },

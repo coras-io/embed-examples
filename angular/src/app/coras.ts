@@ -4,6 +4,7 @@ import type {
   SupportedCurrencies,
   SupportedLocales,
 } from "@coras-io/embed";
+import { getCurrency } from "@coras-io/embed/helpers";
 import { createCorasUrlState } from "@coras-io/embed/url";
 import { environment } from "../environments/environment";
 import { config } from "./config";
@@ -23,7 +24,22 @@ export const chrome: CorasChrome = {
   footer: "managed",
 };
 
-export const url = createCorasUrlState();
+/** The currency a URL without one means: the locale's. */
+export function defaultCurrency(
+  locale: string = config.locale,
+): SupportedCurrencies {
+  return getCurrency(locale);
+}
+
+// The URL shape the Coras hosts share, and the one we recommend: a lower-case
+// locale segment and the currency as a query param only when it is not the
+// locale's default. The SDK default (`/en-IE/EUR/...`) and any other strategy
+// stay available.
+export const url = createCorasUrlState({
+  localeCase: "lower",
+  currencyInPath: false,
+  defaultCurrency,
+});
 
 export function buildConfig(
   locale: SupportedLocales,
@@ -32,7 +48,8 @@ export function buildConfig(
   return {
     apiUrl: environment.apiHost || "https://sandbox.coras.io",
     distributorId: environment.distributorId || site.distributorId,
-    assetsUrl: environment.assetsUrl || "https://assets.sandbox.coras.io/shared",
+    assetsUrl:
+      environment.assetsUrl || "https://assets.sandbox.coras.io/shared",
     theme: theme as CorasConfig["theme"],
     locale,
     allowedLocales: config.locales,

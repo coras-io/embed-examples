@@ -9,113 +9,120 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as LocaleRouteImport } from './routes/$locale'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as LocaleCurrencyRouteImport } from './routes/$locale.$currency'
-import { Route as LocaleCurrencyIndexRouteImport } from './routes/$locale.$currency.index'
-import { Route as LocaleCurrencySearchRouteImport } from './routes/$locale.$currency.search'
-import { Route as LocaleCurrencyPaymentRouteImport } from './routes/$locale.$currency.payment'
-import { Route as LocaleCurrencyHelpRouteImport } from './routes/$locale.$currency.help'
-import { Route as LocaleCurrencyIdRouteImport } from './routes/$locale.$currency.$id'
+import { Route as LocaleIndexRouteImport } from './routes/$locale.index'
+import { Route as LocaleSearchRouteImport } from './routes/$locale.search'
+import { Route as LocalePaymentRouteImport } from './routes/$locale.payment'
+import { Route as LocaleHelpRouteImport } from './routes/$locale.help'
+import { Route as LocaleIdRouteImport } from './routes/$locale.$id'
 
+const LocaleRoute = LocaleRouteImport.update({
+  id: '/$locale',
+  path: '/$locale',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const LocaleCurrencyRoute = LocaleCurrencyRouteImport.update({
-  id: '/$locale/$currency',
-  path: '/$locale/$currency',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const LocaleCurrencyIndexRoute = LocaleCurrencyIndexRouteImport.update({
+const LocaleIndexRoute = LocaleIndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => LocaleCurrencyRoute,
+  getParentRoute: () => LocaleRoute,
 } as any)
-const LocaleCurrencySearchRoute = LocaleCurrencySearchRouteImport.update({
+const LocaleSearchRoute = LocaleSearchRouteImport.update({
   id: '/search',
   path: '/search',
-  getParentRoute: () => LocaleCurrencyRoute,
+  getParentRoute: () => LocaleRoute,
 } as any)
-const LocaleCurrencyPaymentRoute = LocaleCurrencyPaymentRouteImport.update({
+const LocalePaymentRoute = LocalePaymentRouteImport.update({
   id: '/payment',
   path: '/payment',
-  getParentRoute: () => LocaleCurrencyRoute,
+  getParentRoute: () => LocaleRoute,
 } as any)
-const LocaleCurrencyHelpRoute = LocaleCurrencyHelpRouteImport.update({
+const LocaleHelpRoute = LocaleHelpRouteImport.update({
   id: '/help',
   path: '/help',
-  getParentRoute: () => LocaleCurrencyRoute,
+  getParentRoute: () => LocaleRoute,
 } as any)
-const LocaleCurrencyIdRoute = LocaleCurrencyIdRouteImport.update({
+const LocaleIdRoute = LocaleIdRouteImport.update({
   id: '/$id',
   path: '/$id',
-  getParentRoute: () => LocaleCurrencyRoute,
+  getParentRoute: () => LocaleRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/$locale/$currency': typeof LocaleCurrencyRouteWithChildren
-  '/$locale/$currency/$id': typeof LocaleCurrencyIdRoute
-  '/$locale/$currency/help': typeof LocaleCurrencyHelpRoute
-  '/$locale/$currency/payment': typeof LocaleCurrencyPaymentRoute
-  '/$locale/$currency/search': typeof LocaleCurrencySearchRoute
-  '/$locale/$currency/': typeof LocaleCurrencyIndexRoute
+  '/$locale': typeof LocaleRouteWithChildren
+  '/$locale/$id': typeof LocaleIdRoute
+  '/$locale/help': typeof LocaleHelpRoute
+  '/$locale/payment': typeof LocalePaymentRoute
+  '/$locale/search': typeof LocaleSearchRoute
+  '/$locale/': typeof LocaleIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/$locale/$currency/$id': typeof LocaleCurrencyIdRoute
-  '/$locale/$currency/help': typeof LocaleCurrencyHelpRoute
-  '/$locale/$currency/payment': typeof LocaleCurrencyPaymentRoute
-  '/$locale/$currency/search': typeof LocaleCurrencySearchRoute
-  '/$locale/$currency': typeof LocaleCurrencyIndexRoute
+  '/$locale/$id': typeof LocaleIdRoute
+  '/$locale/help': typeof LocaleHelpRoute
+  '/$locale/payment': typeof LocalePaymentRoute
+  '/$locale/search': typeof LocaleSearchRoute
+  '/$locale': typeof LocaleIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/$locale/$currency': typeof LocaleCurrencyRouteWithChildren
-  '/$locale/$currency/$id': typeof LocaleCurrencyIdRoute
-  '/$locale/$currency/help': typeof LocaleCurrencyHelpRoute
-  '/$locale/$currency/payment': typeof LocaleCurrencyPaymentRoute
-  '/$locale/$currency/search': typeof LocaleCurrencySearchRoute
-  '/$locale/$currency/': typeof LocaleCurrencyIndexRoute
+  '/$locale': typeof LocaleRouteWithChildren
+  '/$locale/$id': typeof LocaleIdRoute
+  '/$locale/help': typeof LocaleHelpRoute
+  '/$locale/payment': typeof LocalePaymentRoute
+  '/$locale/search': typeof LocaleSearchRoute
+  '/$locale/': typeof LocaleIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/$locale/$currency'
-    | '/$locale/$currency/$id'
-    | '/$locale/$currency/help'
-    | '/$locale/$currency/payment'
-    | '/$locale/$currency/search'
-    | '/$locale/$currency/'
+    | '/$locale'
+    | '/$locale/$id'
+    | '/$locale/help'
+    | '/$locale/payment'
+    | '/$locale/search'
+    | '/$locale/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/$locale/$currency/$id'
-    | '/$locale/$currency/help'
-    | '/$locale/$currency/payment'
-    | '/$locale/$currency/search'
-    | '/$locale/$currency'
+    | '/$locale/$id'
+    | '/$locale/help'
+    | '/$locale/payment'
+    | '/$locale/search'
+    | '/$locale'
   id:
     | '__root__'
     | '/'
-    | '/$locale/$currency'
-    | '/$locale/$currency/$id'
-    | '/$locale/$currency/help'
-    | '/$locale/$currency/payment'
-    | '/$locale/$currency/search'
-    | '/$locale/$currency/'
+    | '/$locale'
+    | '/$locale/$id'
+    | '/$locale/help'
+    | '/$locale/payment'
+    | '/$locale/search'
+    | '/$locale/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  LocaleCurrencyRoute: typeof LocaleCurrencyRouteWithChildren
+  LocaleRoute: typeof LocaleRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/$locale': {
+      id: '/$locale'
+      path: '/$locale'
+      fullPath: '/$locale'
+      preLoaderRoute: typeof LocaleRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -123,74 +130,66 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/$locale/$currency': {
-      id: '/$locale/$currency'
-      path: '/$locale/$currency'
-      fullPath: '/$locale/$currency'
-      preLoaderRoute: typeof LocaleCurrencyRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/$locale/$currency/': {
-      id: '/$locale/$currency/'
+    '/$locale/': {
+      id: '/$locale/'
       path: '/'
-      fullPath: '/$locale/$currency/'
-      preLoaderRoute: typeof LocaleCurrencyIndexRouteImport
-      parentRoute: typeof LocaleCurrencyRoute
+      fullPath: '/$locale/'
+      preLoaderRoute: typeof LocaleIndexRouteImport
+      parentRoute: typeof LocaleRoute
     }
-    '/$locale/$currency/search': {
-      id: '/$locale/$currency/search'
+    '/$locale/search': {
+      id: '/$locale/search'
       path: '/search'
-      fullPath: '/$locale/$currency/search'
-      preLoaderRoute: typeof LocaleCurrencySearchRouteImport
-      parentRoute: typeof LocaleCurrencyRoute
+      fullPath: '/$locale/search'
+      preLoaderRoute: typeof LocaleSearchRouteImport
+      parentRoute: typeof LocaleRoute
     }
-    '/$locale/$currency/payment': {
-      id: '/$locale/$currency/payment'
+    '/$locale/payment': {
+      id: '/$locale/payment'
       path: '/payment'
-      fullPath: '/$locale/$currency/payment'
-      preLoaderRoute: typeof LocaleCurrencyPaymentRouteImport
-      parentRoute: typeof LocaleCurrencyRoute
+      fullPath: '/$locale/payment'
+      preLoaderRoute: typeof LocalePaymentRouteImport
+      parentRoute: typeof LocaleRoute
     }
-    '/$locale/$currency/help': {
-      id: '/$locale/$currency/help'
+    '/$locale/help': {
+      id: '/$locale/help'
       path: '/help'
-      fullPath: '/$locale/$currency/help'
-      preLoaderRoute: typeof LocaleCurrencyHelpRouteImport
-      parentRoute: typeof LocaleCurrencyRoute
+      fullPath: '/$locale/help'
+      preLoaderRoute: typeof LocaleHelpRouteImport
+      parentRoute: typeof LocaleRoute
     }
-    '/$locale/$currency/$id': {
-      id: '/$locale/$currency/$id'
+    '/$locale/$id': {
+      id: '/$locale/$id'
       path: '/$id'
-      fullPath: '/$locale/$currency/$id'
-      preLoaderRoute: typeof LocaleCurrencyIdRouteImport
-      parentRoute: typeof LocaleCurrencyRoute
+      fullPath: '/$locale/$id'
+      preLoaderRoute: typeof LocaleIdRouteImport
+      parentRoute: typeof LocaleRoute
     }
   }
 }
 
-interface LocaleCurrencyRouteChildren {
-  LocaleCurrencyIdRoute: typeof LocaleCurrencyIdRoute
-  LocaleCurrencyHelpRoute: typeof LocaleCurrencyHelpRoute
-  LocaleCurrencyPaymentRoute: typeof LocaleCurrencyPaymentRoute
-  LocaleCurrencySearchRoute: typeof LocaleCurrencySearchRoute
-  LocaleCurrencyIndexRoute: typeof LocaleCurrencyIndexRoute
+interface LocaleRouteChildren {
+  LocaleIdRoute: typeof LocaleIdRoute
+  LocaleHelpRoute: typeof LocaleHelpRoute
+  LocalePaymentRoute: typeof LocalePaymentRoute
+  LocaleSearchRoute: typeof LocaleSearchRoute
+  LocaleIndexRoute: typeof LocaleIndexRoute
 }
 
-const LocaleCurrencyRouteChildren: LocaleCurrencyRouteChildren = {
-  LocaleCurrencyIdRoute: LocaleCurrencyIdRoute,
-  LocaleCurrencyHelpRoute: LocaleCurrencyHelpRoute,
-  LocaleCurrencyPaymentRoute: LocaleCurrencyPaymentRoute,
-  LocaleCurrencySearchRoute: LocaleCurrencySearchRoute,
-  LocaleCurrencyIndexRoute: LocaleCurrencyIndexRoute,
+const LocaleRouteChildren: LocaleRouteChildren = {
+  LocaleIdRoute: LocaleIdRoute,
+  LocaleHelpRoute: LocaleHelpRoute,
+  LocalePaymentRoute: LocalePaymentRoute,
+  LocaleSearchRoute: LocaleSearchRoute,
+  LocaleIndexRoute: LocaleIndexRoute,
 }
 
-const LocaleCurrencyRouteWithChildren = LocaleCurrencyRoute._addFileChildren(
-  LocaleCurrencyRouteChildren,
-)
+const LocaleRouteWithChildren =
+  LocaleRoute._addFileChildren(LocaleRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  LocaleCurrencyRoute: LocaleCurrencyRouteWithChildren,
+  LocaleRoute: LocaleRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

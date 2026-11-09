@@ -14,6 +14,7 @@ import {
   type CorasApp,
   type CorasChrome,
   type CorasConfig,
+  type CorasHrefFor,
   type CorasNavigateDetail,
   type CorasPageName,
   type CorasPageParams,
@@ -38,6 +39,7 @@ export class CorasMountComponent
   @Input() params?: CorasPageParams;
   @Input({ required: true }) config!: CorasConfig;
   @Input() chrome?: CorasChrome;
+  @Input() hrefFor?: CorasHrefFor;
 
   @Output() navigate = new EventEmitter<CorasNavigateDetail>();
   @Output() stateChange = new EventEmitter<CorasStateChangeDetail>();
@@ -55,6 +57,7 @@ export class CorasMountComponent
       params: this.params,
       config: this.config,
       chrome: this.chrome,
+      hrefFor: (intent) => this.hrefFor?.(intent),
       onNavigate: (detail) => this.navigate.emit(detail),
       onStateChange: (detail) => this.stateChange.emit(detail),
     });

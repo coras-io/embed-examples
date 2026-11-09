@@ -4,16 +4,15 @@ import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 import { filter } from "rxjs";
 import type {
   CorasConfig,
-  CorasNavigateDetail,
   CorasPageName,
   CorasPageParams,
-  CorasStateChangeDetail,
   SupportedCurrencies,
   SupportedLocales,
 } from "@coras-io/embed";
+import { createCorasRouting } from "@coras-io/embed/url";
 import { CorasMountComponent } from "./coras-mount.component";
 import { config } from "./config";
-import { buildConfig, chrome, logo, url } from "./coras";
+import { buildConfig, chrome, defaultCurrency, logo, url } from "./coras";
 
 @Component({
   selector: "app-locale-currency-layout",
@@ -25,8 +24,9 @@ import { buildConfig, chrome, logo, url } from "./coras";
       [params]="params"
       [config]="config"
       [chrome]="chrome"
-      (navigate)="onNavigate($event)"
-      (stateChange)="onStateChange($event)"
+      [hrefFor]="routing.hrefFor"
+      (navigate)="routing.onNavigate($event)"
+      (stateChange)="routing.onStateChange($event)"
     />
     <router-outlet />
   `,
@@ -45,6 +45,14 @@ export class LocaleCurrencyLayoutComponent implements OnInit {
   private readonly router = inject(Router);
   private readonly destroyRef = inject(DestroyRef);
 
+  // A navigation pushes a history entry, an in-page change replaces it.
+  readonly routing = createCorasRouting({
+    url,
+    navigate: (href) => void this.router.navigateByUrl(href),
+    replace: (href) =>
+      void this.router.navigateByUrl(href, { replaceUrl: true }),
+  });
+
   ngOnInit(): void {
     this.syncFromUrl();
     this.router.events
@@ -60,45 +68,20 @@ export class LocaleCurrencyLayoutComponent implements OnInit {
     );
   }
 
-  onNavigate(intent: CorasNavigateDetail): void {
-    this.syncUrl(intent, false);
-  }
-
-  onStateChange(state: CorasStateChangeDetail): void {
-    this.syncUrl(state, true);
-  }
-
   private syncFromUrl(): void {
     const { page, params, locale, currency } = url.parse(this.router.url);
     this.page = page;
     this.params = params;
     this.config = buildConfig(
       (locale ?? config.locale) as SupportedLocales,
-      (currency ?? config.currency) as SupportedCurrencies,
+      (currency ?? defaultCurrency(locale)) as SupportedCurrencies,
     );
   }
 
-  private syncUrl(
-    detail: CorasNavigateDetail | CorasStateChangeDetail,
-    replace: boolean,
-  ): void {
-    if ("href" in detail && detail.href) {
-      window.open(detail.href, "_blank", "noopener,noreferrer");
-      return;
-    }
-    const href = url.build({
-      page: detail.page,
-      params: detail.params ?? {},
-      locale: detail.locale,
-      currency: detail.currency,
-    });
-    void this.router.navigateByUrl(href, { replaceUrl: replace });
-  }
-
   private readonly goToLanding = (): void => {
-    const { locale, currency } = url.parse(this.router.url);
+    const { locale } = url.parse(this.router.url);
     void this.router.navigateByUrl(
-      `/${locale ?? config.locale}/${currency ?? config.currency}`,
+      `/${(locale ?? config.locale).toLowerCase()}`,
     );
   };
 }

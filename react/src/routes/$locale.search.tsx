@@ -2,18 +2,19 @@ import * as v from "valibot";
 import { createFileRoute } from "@tanstack/react-router";
 
 const searchParamsSchema = v.object({
-  content: v.optional(v.string()),
+  startDate: v.optional(v.string()),
+  search: v.optional(v.string()),
 });
 
-export const Route = createFileRoute("/$locale/$currency/help")({
+export const Route = createFileRoute("/$locale/search")({
   component: () => null,
   validateSearch: searchParamsSchema,
   head: () => ({
     meta: [
-      { title: "Coras Help Centre" },
+      { title: "Coras Tickets" },
       {
         name: "description",
-        content: "Find answers to common questions and get support",
+        content: "Book tickets to West End Shows, Concerts and more",
       },
     ],
   }),

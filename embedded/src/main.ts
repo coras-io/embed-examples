@@ -1,9 +1,5 @@
-import {
-  mount,
-  type CorasApp,
-  type CorasNavigateDetail,
-  type CorasStateChangeDetail,
-} from "@coras-io/embed";
+import { mount, type CorasApp } from "@coras-io/embed";
+import { createCorasRouting } from "@coras-io/embed/url";
 import { buildConfig, chrome, corasUrl, TICKETS_BASE } from "./coras.ts";
 
 const main = document.getElementById("app")!;
@@ -36,19 +32,18 @@ function renderHostPage(path: string): void {
          </article>`;
 }
 
-function syncCoras(
-  detail: CorasNavigateDetail | CorasStateChangeDetail,
-  replace: boolean,
-): void {
-  if ("href" in detail && detail.href) {
-    window.open(detail.href, "_blank", "noopener,noreferrer");
-    return;
-  }
-  const to = corasUrl.build({ page: detail.page, params: detail.params ?? {} });
-  history[replace ? "replaceState" : "pushState"](null, "", to);
-  const next = corasUrl.parse(to);
+function showTickets(href: string, replace: boolean): void {
+  history[replace ? "replaceState" : "pushState"](null, "", href);
+  const next = corasUrl.parse(href);
   app?.update({ page: next.page, params: next.params });
 }
+
+// Locale and currency are fixed in `config`, so a URL carries page and params only.
+const routing = createCorasRouting({
+  url: { build: ({ page, params }) => corasUrl.build({ page, params }) },
+  navigate: (href) => showTickets(href, false),
+  replace: (href) => showTickets(href, true),
+});
 
 function renderTickets(href: string): void {
   const { page, params } = corasUrl.parse(href);
@@ -66,8 +61,7 @@ function renderTickets(href: string): void {
     params,
     config: buildConfig(),
     chrome,
-    onNavigate: (intent) => syncCoras(intent, false),
-    onStateChange: (state) => syncCoras(state, true),
+    ...routing,
   });
 }
 

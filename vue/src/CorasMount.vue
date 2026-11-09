@@ -5,6 +5,7 @@ import {
   type CorasApp,
   type CorasChrome,
   type CorasConfig,
+  type CorasHrefFor,
   type CorasNavigateDetail,
   type CorasPageName,
   type CorasPageParams,
@@ -16,6 +17,7 @@ const props = defineProps<{
   params?: CorasPageParams;
   config: CorasConfig;
   chrome?: CorasChrome;
+  hrefFor?: CorasHrefFor;
 }>();
 
 const emit = defineEmits<{
@@ -35,6 +37,7 @@ onMounted(() => {
     params: props.params,
     config: props.config,
     chrome: props.chrome,
+    hrefFor: (intent) => props.hrefFor?.(intent),
     onNavigate: (detail) => emit("navigate", detail),
     onStateChange: (detail) => emit("stateChange", detail),
   });

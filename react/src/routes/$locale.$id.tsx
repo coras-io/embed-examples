@@ -9,7 +9,7 @@ const searchParamsSchema = v.object({
   date: v.optional(v.string()),
 });
 
-export const Route = createFileRoute("/$locale/$currency/$id")({
+export const Route = createFileRoute("/$locale/$id")({
   component: () => null,
   params: { parse: (rawParams) => v.parse(routeParamsSchema, rawParams) },
   validateSearch: searchParamsSchema,

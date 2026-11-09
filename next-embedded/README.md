@@ -38,8 +38,10 @@ just one client component, `CorasMount`. That component calls `mount()` inside a
 The mount is created **once**. Host navigation and Coras navigation are kept in
 sync without a loop:
 
-- Coras emits an `onNavigate` intent → `buildCorasUrl` turns it into a
-  `/tickets/...` path → `useRouter().push(...)`.
+- Coras emits an `onNavigate` intent → `createCorasRouting` turns it into a
+  `/tickets/...` path with `buildCorasUrl` → `useRouter().push(...)`. The same
+  helper gives the embed its `hrefFor`, so its links are real `/tickets/...`
+  links.
 - A host route change (`usePathname()`) → `app.update(...)`, which re-renders in
   place and does **not** re-emit `onNavigate`.
 

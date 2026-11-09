@@ -31,6 +31,7 @@ export default class CorasMount extends Modifier {
       params: named.params,
       config: named.config,
       chrome: named.chrome,
+      hrefFor: (intent) => this.#args.hrefFor?.(intent),
       onNavigate: (intent) => this.#args.onNavigate?.(intent),
       onStateChange: (state) => this.#args.onStateChange?.(state),
     });

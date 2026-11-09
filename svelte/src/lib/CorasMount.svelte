@@ -7,6 +7,7 @@
     CorasApp,
     CorasChrome,
     CorasConfig,
+    CorasHrefFor,
     CorasNavigateDetail,
     CorasPageName,
     CorasPageParams,
@@ -18,6 +19,7 @@
     params,
     config,
     chrome,
+    hrefFor,
     onNavigate,
     onStateChange,
   }: {
@@ -25,6 +27,7 @@
     params?: CorasPageParams;
     config: CorasConfig;
     chrome?: CorasChrome;
+    hrefFor?: CorasHrefFor;
     onNavigate?: (intent: CorasNavigateDetail) => void;
     onStateChange?: (state: CorasStateChangeDetail) => void;
   } = $props();
@@ -40,6 +43,7 @@
       params,
       config,
       chrome,
+      hrefFor: (intent) => hrefFor?.(intent),
       onNavigate: (intent) => onNavigate?.(intent),
       onStateChange: (state) => onStateChange?.(state),
     });

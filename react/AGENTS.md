@@ -4,16 +4,16 @@ This is a working standalone integration of `@coras-io/embed` in a React app; th
 
 ## Files to port
 
-| File                                                               | Role                                                                                                                              | Port as                                                                       |
-| ------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------- |
-| `src/CorasMount.tsx`                                               | The React wrapper over `mount()` / `update()` / `unmount()`: mounts once, updates in place, tears down on unmount.                | Copy as is. It has no router dependency.                                      |
-| `src/routes/$locale.$currency.tsx`                                 | The layout route that holds the one persistent mount for every page and derives `page` and `params` from the URL.                 | Port to your router's layout route.                                           |
-| `src/utils.ts`                                                     | The SDK config, chrome, and URL strategy, plus `handleNavigate` / `handleStateChange` that map SDK intents to router navigations. | Keep the logic; swap the `navigate` calls for your router's push and replace. |
-| `src/routes/index.tsx`                                             | Redirects `/` to `/:locale/:currency`.                                                                                            | Port to your router.                                                          |
-| `src/routes/$locale.$currency.{index,search,$id,payment,help}.tsx` | One route per page. They render nothing; they declare the URL shape and the search params each page reads.                        | Declare the same routes and params in your router.                            |
-| `src/config.ts`                                                    | The default and allowed locales and currencies.                                                                                   | Copy and edit.                                                                |
-| `src/main.tsx`                                                     | Router bootstrap.                                                                                                                 | Your app already has one.                                                     |
-| `brand.json`                                                       | The theme, passed once as `config.theme`.                                                                                         | Replace with your brand file.                                                 |
+| File                                                     | Role                                                                                                                              | Port as                                                                       |
+| -------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------- |
+| `src/CorasMount.tsx`                                     | The React wrapper over `mount()` / `update()` / `unmount()`: mounts once, updates in place, tears down on unmount.                | Copy as is. It has no router dependency.                                      |
+| `src/routes/$locale.tsx`                                 | The layout route that holds the one persistent mount for every page and derives `page` and `params` from the URL.                 | Port to your router's layout route.                                           |
+| `src/utils.ts`                                           | The SDK config, chrome, and URL strategy, plus `handleNavigate` / `handleStateChange` that map SDK intents to router navigations. | Keep the logic; swap the `navigate` calls for your router's push and replace. |
+| `src/routes/index.tsx`                                   | Redirects `/` to `/:locale`.                                                                                                      | Port to your router.                                                          |
+| `src/routes/$locale.{index,search,$id,payment,help}.tsx` | One route per page. They render nothing; they declare the URL shape and the search params each page reads.                        | Declare the same routes and params in your router.                            |
+| `src/config.ts`                                          | The default and allowed locales and currencies.                                                                                   | Copy and edit.                                                                |
+| `src/main.tsx`                                           | Router bootstrap.                                                                                                                 | Your app already has one.                                                     |
+| `brand.json`                                             | The theme, passed once as `config.theme`.                                                                                         | Replace with your brand file.                                                 |
 
 ## Values to change
 
@@ -32,7 +32,7 @@ Nothing else changes. The routing glue, the mount lifecycle, and the URL strateg
 
 ## Routes this example declares
 
-`/` redirects to `/:locale/:currency`. Under it: ``(landing),`search`, `payment`, `help`, and `:id` (details). Page params are search params, declared per route with valibot schemas; keep those declarations, because TanStack drops undeclared search params.
+`/` redirects to `/:locale`. Under it: ``(landing),`search`, `payment`, `help`, and `:id`(details). Page params are search params, declared per route with valibot schemas, and`currency` is one on the layout route, present only when it is not the locale's default; keep those declarations, because TanStack drops undeclared search params.
 
 ## Notes
 

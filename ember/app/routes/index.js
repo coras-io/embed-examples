@@ -5,6 +5,6 @@ export default class IndexRoute extends Route {
   @service router;
 
   redirect() {
-    this.router.replaceWith('/en-IE/EUR');
+    this.router.replaceWith('/en-ie');
   }
 }

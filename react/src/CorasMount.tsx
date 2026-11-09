@@ -5,6 +5,7 @@ import {
   type CorasCallbacks,
   type CorasChrome,
   type CorasConfig,
+  type CorasHrefFor,
   type CorasPageName,
   type CorasPageParamsByPage,
 } from "@coras-io/embed";
@@ -14,6 +15,7 @@ type CorasMountProps<P extends CorasPageName> = {
   config: CorasConfig;
   params?: CorasPageParamsByPage[P];
   chrome?: CorasChrome;
+  hrefFor?: CorasHrefFor;
 } & CorasCallbacks;
 
 export function CorasMount<P extends CorasPageName>(
@@ -35,6 +37,7 @@ export function CorasMount<P extends CorasPageName>(
       config: propsRef.current.config,
       params: propsRef.current.params,
       chrome: propsRef.current.chrome,
+      hrefFor: (intent) => propsRef.current.hrefFor?.(intent),
       onReady: (detail) => propsRef.current.onReady?.(detail),
       onNavigate: (detail) => propsRef.current.onNavigate?.(detail),
       onStateChange: (detail) => propsRef.current.onStateChange?.(detail),

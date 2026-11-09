@@ -4,12 +4,12 @@ This is a working standalone integration of `@coras-io/embed` in a plain JavaScr
 
 ## Files to port
 
-| File           | Role                                                                                                                                                                                | Port as                                               |
-| -------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------- |
-| `src/coras.ts` | The SDK config, the managed chrome with a host-owned logo, and the shared URL strategy (`createCorasUrlState()`: locale and currency in the path).                                  | Copy as is; it is framework-free.                     |
-| `src/main.ts`  | The whole integration: parse the URL, create the one persistent mount, `syncUrl` for `onNavigate` (push) and `onStateChange` (replace), the `popstate` handler, and the logo click. | Copy as is into your entry module.                    |
-| `index.html`   | The `#app` container the SDK owns, plus the documented standalone reset that lets it fill the viewport.                                                                             | Copy the reset; add nothing that styles Coras itself. |
-| `brand.json`   | The theme, passed once as `config.theme`.                                                                                                                                           | Replace with your brand file.                         |
+| File           | Role                                                                                                                                                                                                                                                                          | Port as                                               |
+| -------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------- |
+| `src/coras.ts` | The SDK config, the managed chrome with a host-owned logo, and the shared URL strategy (a lower-case locale in the path and the currency as a query param only when it is not the locale's default: the shape the Coras hosts share; the SDK default keeps both in the path). | Copy as is; it is framework-free.                     |
+| `src/main.ts`  | The whole integration: parse the URL, create the one persistent mount with `createCorasRouting` (`hrefFor`, `onNavigate` pushes, `onStateChange` replaces), the `popstate` handler, and the logo click.                                                                       | Copy as is into your entry module.                    |
+| `index.html`   | The `#app` container the SDK owns, plus the documented standalone reset that lets it fill the viewport.                                                                                                                                                                       | Copy the reset; add nothing that styles Coras itself. |
+| `brand.json`   | The theme, passed once as `config.theme`.                                                                                                                                                                                                                                     | Replace with your brand file.                         |
 
 ## Values to change
 
@@ -27,7 +27,7 @@ None. Everything here is part of the integration.
 
 ## Routes this example declares
 
-`/` mounts the landing page with the config defaults. Every other URL is `/:locale/:currency`, then `search`, `payment`, `help`, or a bare attraction id for details, with page params as query parameters. There is no router: `main.ts` handles every URL in the one loaded page, so the static host must serve `index.html` for every path.
+`/` mounts the landing page with the config defaults. Every other URL is `/:locale`, then `search`, `payment`, `help`, or a bare attraction id for details, with page params and a non-default `currency` as query parameters. There is no router: `main.ts` handles every URL in the one loaded page, so the static host must serve `index.html` for every path.
 
 ## Run it
 

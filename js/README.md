@@ -30,9 +30,11 @@ the values (all optional): `VITE_API_HOST` (default `https://sandbox.coras.io`),
 - A single persistent `mount()` for every page. Route changes call
   `app.update()`, so the navbar, footer, and chrome stay in place and only the
   page content swaps.
-- Host-owned routing with the History API: `onNavigate` / `onStateChange` push
-  the SDK's navigation intent to the URL via the SDK URL helper, and `popstate`
-  feeds the URL back into `app.update()`.
+- Host-owned routing with the History API: `createCorasRouting` from the SDK
+  URL helper gives the mount its `hrefFor`, `onNavigate` and `onStateChange`;
+  the app pushes or replaces the built URL and `popstate` feeds the URL back
+  into `app.update()`. With `hrefFor` the embed's cards, breadcrumbs, logo and
+  footer links render as real links.
 - Theming from a committed [`brand.json`](brand.json), passed once as
   `config.theme`.
 - `strict: true` on the mount, so an unknown option or param key fails

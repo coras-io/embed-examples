@@ -6,9 +6,10 @@ import CorasMount from '../modifiers/coras-mount';
 import {
   buildConfig,
   corasChrome,
+  corasRouting,
   corasUrl,
-  handleNavigate,
-  handleStateChange,
+  DEFAULT_LOCALE,
+  defaultCurrency,
   logo,
 } from '../coras';
 
@@ -32,8 +33,13 @@ export default class CorasEmbed extends Component {
 
   goToLanding = () => {
     const { locale, currency } = this.state;
-    handleNavigate(this.router, { page: 'landing', params: {}, locale, currency });
+    this.routing.onNavigate({ page: 'landing', params: {}, locale, currency, source: 'host' });
   };
+
+  @cached
+  get routing() {
+    return corasRouting(this.router);
+  }
 
   @cached
   get state() {
@@ -50,11 +56,8 @@ export default class CorasEmbed extends Component {
 
   get config() {
     const { locale, currency } = this.state;
-    return buildConfig(locale ?? 'en-IE', currency ?? 'EUR');
+    return buildConfig(locale ?? DEFAULT_LOCALE, currency ?? defaultCurrency(locale));
   }
-
-  onNavigate = (intent) => handleNavigate(this.router, intent);
-  onStateChange = (state) => handleStateChange(this.router, state);
 
   <template>
     <div
@@ -64,8 +67,9 @@ export default class CorasEmbed extends Component {
         params=this.params
         config=this.config
         chrome=this.chrome
-        onNavigate=this.onNavigate
-        onStateChange=this.onStateChange
+        hrefFor=this.routing.hrefFor
+        onNavigate=this.routing.onNavigate
+        onStateChange=this.routing.onStateChange
       }}
     ></div>
   </template>

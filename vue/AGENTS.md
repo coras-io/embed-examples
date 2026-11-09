@@ -10,7 +10,7 @@ This is a working standalone integration of `@coras-io/embed` in a Vue 3 app wit
 | `src/views/LocaleCurrencyLayout.vue` | The layout that holds the one persistent mount, derives `page` and `params` from the URL, and maps SDK intents to `router.push` / `router.replace`. | Copy as is.                   |
 | `src/views/EmbeddedPage.vue`         | An empty route target: each page is a URL under the layout, not a component.                                                                        | Copy as is.                   |
 | `src/coras.ts`                       | The SDK config, chrome with the host logo, and the shared URL strategy.                                                                             | Copy as is.                   |
-| `src/router.ts`                      | The `/` redirect and the `/:locale/:currency` routes.                                                                                               | Merge into your router.       |
+| `src/router.ts`                      | The `/` redirect and the `/:locale` routes.                                                                                                         | Merge into your router.       |
 | `src/config.ts`                      | The default and allowed locales and currencies.                                                                                                     | Copy and edit.                |
 | `brand.json`                         | The theme, passed once as `config.theme`.                                                                                                           | Replace with your brand file. |
 
@@ -29,7 +29,7 @@ Nothing else changes. The routing glue, the mount lifecycle, and the URL strateg
 
 ## Routes this example declares
 
-`/` redirects to `/:locale/:currency`. Under it: ``(landing),`search`, `payment`, `help`, and `:id`(details), each pointing at the empty`EmbeddedPage`. Page params are query parameters.
+`/` redirects to `/:locale`. Under it: ``(landing),`search`, `payment`, `help`, and `:id`(details), each pointing at the empty`EmbeddedPage`. Page params are query parameters, and so is `currency`, present only when it is not the locale's default.
 
 ## Notes
 

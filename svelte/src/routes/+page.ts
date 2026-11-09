@@ -1,8 +1,7 @@
 import { redirect } from "@sveltejs/kit";
-import { getCurrency, getLocale } from "@coras-io/embed/helpers";
+import { getLocale } from "@coras-io/embed/helpers";
 
+// The currency is the locale's default, so the URL does not name it.
 export const load = () => {
-  const locale = getLocale();
-  const currency = getCurrency(locale);
-  redirect(307, `/${locale}/${currency}`);
+  redirect(307, `/${getLocale().toLowerCase()}`);
 };

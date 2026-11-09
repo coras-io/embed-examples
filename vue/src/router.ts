@@ -3,7 +3,7 @@ import {
   createWebHistory,
   type RouteRecordRaw,
 } from "vue-router";
-import { getCurrency, getLocale } from "@coras-io/embed/helpers";
+import { getLocale } from "@coras-io/embed/helpers";
 import { config } from "./config.ts";
 import LocaleCurrencyLayout from "./views/LocaleCurrencyLayout.vue";
 import EmbeddedPage from "./views/EmbeddedPage.vue";
@@ -11,14 +11,11 @@ import EmbeddedPage from "./views/EmbeddedPage.vue";
 const routes: RouteRecordRaw[] = [
   {
     path: "/",
-    redirect: () => {
-      const locale = getLocale(config.locale);
-      const currency = getCurrency(locale);
-      return `/${locale}/${currency}`;
-    },
+    // The currency is the locale's default, so the URL does not name it.
+    redirect: () => `/${getLocale(config.locale).toLowerCase()}`,
   },
   {
-    path: "/:locale/:currency",
+    path: "/:locale",
     component: LocaleCurrencyLayout,
     children: [
       { path: "", name: "landing", component: EmbeddedPage },

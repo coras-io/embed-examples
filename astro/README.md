@@ -18,7 +18,7 @@ pnpm dev
 That's it - the example ships pointed at the public Coras sandbox and CDN, so it
 renders real content with no configuration. Open the URL Astro prints; it loads
 the Coras landing page inside the SDK chrome, and the SDK's own navigation moves
-you to `/:locale/:currency/...` URLs from there.
+you to `/:locale/...` URLs from there.
 
 To point at a different backend, copy `.env.example` to `.env` and fill in any of
 the values (all optional). Astro only exposes `PUBLIC_`-prefixed vars to the
@@ -35,11 +35,12 @@ browser:
 - A single persistent `mount()` for every page. Route changes call
   `app.update()`, so the navbar, footer, and chrome stay in place and only the
   page content swaps - no remount.
-- Host-owned routing with the History API: `onNavigate` / `onStateChange` push
-  the SDK's navigation intent to the URL via the SDK URL helper (`pushState` for
-  a navigation, `replaceState` for an in-page state change), and `popstate`
-  feeds the URL back into `app.update()`. `update` does not re-emit `onNavigate`,
-  so there is no loop.
+- Host-owned routing with the History API: `createCorasRouting` from the SDK
+  URL helper gives the mount its `hrefFor`, `onNavigate` and `onStateChange`
+  (`pushState` for a navigation, `replaceState` for an in-page state change),
+  and `popstate` feeds the URL back into `app.update()`. `update` does not
+  re-emit `onNavigate`, so there is no loop. With `hrefFor` the embed's cards,
+  breadcrumbs, logo and footer links render as real links.
 - Reading the current page and params from the URL with the SDK URL helper, so
   deep links and refreshes land on the right page.
 - Theming from a committed [`brand.json`](brand.json), passed once as
@@ -70,7 +71,7 @@ client:
   dynamic route needs `getStaticPaths()`, so it returns a single root page. The
   client `<script>` (which Astro bundles for the browser and never runs during
   SSR/prerender) mounts the SDK into `#app` and drives History-API routing for
-  every `/:locale/:currency/...` URL within that one loaded page.
+  every `/:locale/...` URL within that one loaded page.
 - **Point the bucket's 404/error document at `index.html`** (or add a
   CloudFront custom error response) so deep links and refreshes to a deeper URL
   load the app instead of a storage 404.

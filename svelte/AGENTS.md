@@ -4,15 +4,15 @@ This is a working standalone integration of `@coras-io/embed` in a SvelteKit app
 
 ## Files to port
 
-| File                                                                     | Role                                                                                                                                                           | Port as                              |
-| ------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------ |
-| `src/lib/CorasMount.svelte`                                              | The Svelte wrapper over `mount()` / `update()` / `unmount()`.                                                                                                  | Copy as is.                          |
-| `src/lib/coras.ts`                                                       | The SDK config and the shared URL strategy. `buildChrome()` is a function, not a module constant, so importing the module never touches `document` during SSR. | Copy as is.                          |
-| `src/routes/+layout.ts`                                                  | `ssr = false`, `prerender = false`: the SDK is browser-only.                                                                                                   | Keep for the Coras subtree at least. |
-| `src/routes/+page.ts`                                                    | Redirects `/` to `/:locale/:currency`.                                                                                                                         | Copy as is.                          |
-| `src/routes/[locale]/[currency]/+layout.svelte`                          | The layout that holds the one persistent mount, derives `page` and `params` from the URL, and maps SDK intents to `goto` (push or `replaceState`).             | Copy as is.                          |
-| `src/routes/[locale]/[currency]/{+page.svelte,search,payment,help,[id]}` | One empty route per page: each page is a URL under the layout.                                                                                                 | Copy as is.                          |
-| `brand.json`                                                             | The theme, passed once as `config.theme`.                                                                                                                      | Replace with your brand file.        |
+| File                                                          | Role                                                                                                                                                           | Port as                              |
+| ------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------ |
+| `src/lib/CorasMount.svelte`                                   | The Svelte wrapper over `mount()` / `update()` / `unmount()`.                                                                                                  | Copy as is.                          |
+| `src/lib/coras.ts`                                            | The SDK config and the shared URL strategy. `buildChrome()` is a function, not a module constant, so importing the module never touches `document` during SSR. | Copy as is.                          |
+| `src/routes/+layout.ts`                                       | `ssr = false`, `prerender = false`: the SDK is browser-only.                                                                                                   | Keep for the Coras subtree at least. |
+| `src/routes/+page.ts`                                         | Redirects `/` to `/:locale`.                                                                                                                                   | Copy as is.                          |
+| `src/routes/[locale]/+layout.svelte`                          | The layout that holds the one persistent mount, derives `page` and `params` from the URL, and maps SDK intents to `goto` (push or `replaceState`).             | Copy as is.                          |
+| `src/routes/[locale]/{+page.svelte,search,payment,help,[id]}` | One empty route per page: each page is a URL under the layout.                                                                                                 | Copy as is.                          |
+| `brand.json`                                                  | The theme, passed once as `config.theme`.                                                                                                                      | Replace with your brand file.        |
 
 ## Values to change
 
@@ -28,7 +28,7 @@ Nothing else changes. The routing glue, the mount lifecycle, and the URL strateg
 
 ## Routes this example declares
 
-`/` redirects to `/:locale/:currency`. Under it: ``(landing),`search`, `payment`, `help`, and `[id]` (details). Page params are query parameters.
+`/` redirects to `/:locale`. Under it: ``(landing),`search`, `payment`, `help`, and `[id]`(details). Page params are query parameters, and so is`currency`, present only when it is not the locale's default.
 
 ## Notes
 

@@ -4,12 +4,12 @@ This is a working standalone integration of `@coras-io/embed` in an Astro site w
 
 ## Files to port
 
-| File                        | Role                                                                                                                                                                                | Port as                                           |
-| --------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------- |
-| `src/pages/[...path].astro` | The single static page: the `#app` container, the documented standalone reset, and a client `<script>` that imports the entry. `getStaticPaths()` emits only the root `index.html`. | Copy as is, or mount from a `client:only` island. |
-| `src/main.ts`               | The whole integration: parse the URL, the one persistent mount, `syncUrl` for `onNavigate` (push) and `onStateChange` (replace), the `popstate` handler, and the logo click.        | Copy as is.                                       |
-| `src/coras.ts`              | The SDK config, the managed chrome with a host-owned logo, and the shared URL strategy.                                                                                             | Copy as is.                                       |
-| `brand.json`                | The theme, passed once as `config.theme`.                                                                                                                                           | Replace with your brand file.                     |
+| File                        | Role                                                                                                                                                                                             | Port as                                           |
+| --------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------- |
+| `src/pages/[...path].astro` | The single static page: the `#app` container, the documented standalone reset, and a client `<script>` that imports the entry. `getStaticPaths()` emits only the root `index.html`.              | Copy as is, or mount from a `client:only` island. |
+| `src/main.ts`               | The whole integration: parse the URL, the one persistent mount with `createCorasRouting` (`hrefFor`, `onNavigate` pushes, `onStateChange` replaces), the `popstate` handler, and the logo click. | Copy as is.                                       |
+| `src/coras.ts`              | The SDK config, the managed chrome with a host-owned logo, and the shared URL strategy.                                                                                                          | Copy as is.                                       |
+| `brand.json`                | The theme, passed once as `config.theme`.                                                                                                                                                        | Replace with your brand file.                     |
 
 ## Values to change
 
@@ -27,7 +27,7 @@ None. Everything here is part of the integration.
 
 ## Routes this example declares
 
-`/` mounts the landing page with the config defaults. Every other URL is `/:locale/:currency`, then `search`, `payment`, `help`, or a bare attraction id for details. History-API routing runs inside the one loaded page, so point the static host's 404 document at `index.html`.
+`/` mounts the landing page with the config defaults. Every other URL is `/:locale`, then `search`, `payment`, `help`, or a bare attraction id for details, with page params and a non-default `currency` as query parameters. History-API routing runs inside the one loaded page, so point the static host's 404 document at `index.html`.
 
 ## Notes
 

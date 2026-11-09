@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import * as v from "valibot";
 import {
   createFileRoute,
@@ -19,26 +19,33 @@ import { withStoredLocation } from "../last-location.ts";
 import {
   buildConfig,
   corasChrome,
+  corasRouting,
   corasUrl,
-  handleNavigate,
-  handleStateChange,
+  defaultCurrency,
   logo,
+  siteLocale,
 } from "../utils.ts";
 
-const routeParamsSchema = v.object({
-  locale: v.optional(v.picklist(config.locales), config.locale),
-  currency: v.optional(v.picklist(config.currencies), config.currency),
+const searchParamsSchema = v.object({
+  currency: v.fallback(v.optional(v.picklist(config.currencies)), undefined),
 });
 
-export const Route = createFileRoute("/$locale/$currency")({
-  component: LocaleCurrencyLayout,
-  params: { parse: (rawParams) => v.parse(routeParamsSchema, rawParams) },
+export const Route = createFileRoute("/$locale")({
+  component: LocaleLayout,
+  // Never throws: parse runs before beforeLoad, so a bad locale falls back.
+  params: {
+    parse: ({ locale }) => ({ locale: siteLocale(locale) }),
+    stringify: ({ locale }) => ({ locale: locale.toLowerCase() }),
+  },
+  validateSearch: searchParamsSchema,
 });
 
-function LocaleCurrencyLayout() {
-  const { locale, currency } = Route.useParams();
+function LocaleLayout() {
+  const { locale } = Route.useParams();
+  const { currency = defaultCurrency(locale) } = Route.useSearch();
   const location = useLocation();
   const navigate = useNavigate();
+  const routing = useMemo(() => corasRouting(navigate), [navigate]);
 
   const { page, params } = corasUrl.parse(location.href);
   const resolvedParams =
@@ -47,8 +54,8 @@ function LocaleCurrencyLayout() {
   useEffect(() => {
     const goToLanding = () =>
       navigate({
-        to: "/$locale/$currency",
-        params: { locale, currency },
+        to: "/$locale",
+        params: { locale },
         resetScroll: true,
       });
     logo.addEventListener("click", goToLanding);
@@ -73,8 +80,7 @@ function LocaleCurrencyLayout() {
           locale as SupportedLocales,
           currency as SupportedCurrencies,
         )}
-        onNavigate={(intent) => handleNavigate(navigate, intent)}
-        onStateChange={(state) => handleStateChange(navigate, state)}
+        {...routing}
         onReservationCreated={onReservationCreated}
         onPaymentStatus={onPaymentStatus}
       />
