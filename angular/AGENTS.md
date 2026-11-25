@@ -36,7 +36,6 @@ Nothing else changes. The routing glue, the mount lifecycle, and the URL strateg
 
 - `brand.json` is imported as a module: keep `resolveJsonModule` on in `tsconfig`.
 - `ngOnChanges` runs before `ngAfterViewInit`, so the first change set arrives with no app yet. The initial state is passed straight to `mount()`; `app?.update()` covers every later change.
-- `angular.json` lists `react` under `build.options.externalDependencies`. It is a build-tool workaround for an optional peer dependency, not part of the integration: the SDK lazily loads `@coinbase/cdp-core`, which pulls in `zustand`, whose entry re-exports a React binding that a plain Angular app never installs. Without the entry the builder stops with `Could not resolve "react"`. `angular.json` is JSON and cannot carry the comment itself, so it lives here.
 
 ## Run it
 

@@ -9,22 +9,22 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as LocaleRouteImport } from './routes/$locale'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as LocaleRouteImport } from './routes/$locale'
 import { Route as LocaleIndexRouteImport } from './routes/$locale.index'
-import { Route as LocaleSearchRouteImport } from './routes/$locale.search'
-import { Route as LocalePaymentRouteImport } from './routes/$locale.payment'
-import { Route as LocaleHelpRouteImport } from './routes/$locale.help'
 import { Route as LocaleIdRouteImport } from './routes/$locale.$id'
+import { Route as LocaleHelpRouteImport } from './routes/$locale.help'
+import { Route as LocalePaymentRouteImport } from './routes/$locale.payment'
+import { Route as LocaleSearchRouteImport } from './routes/$locale.search'
 
-const LocaleRoute = LocaleRouteImport.update({
-  id: '/$locale',
-  path: '/$locale',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LocaleRoute = LocaleRouteImport.update({
+  id: '/$locale',
+  path: '/$locale',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LocaleIndexRoute = LocaleIndexRouteImport.update({
@@ -32,14 +32,9 @@ const LocaleIndexRoute = LocaleIndexRouteImport.update({
   path: '/',
   getParentRoute: () => LocaleRoute,
 } as any)
-const LocaleSearchRoute = LocaleSearchRouteImport.update({
-  id: '/search',
-  path: '/search',
-  getParentRoute: () => LocaleRoute,
-} as any)
-const LocalePaymentRoute = LocalePaymentRouteImport.update({
-  id: '/payment',
-  path: '/payment',
+const LocaleIdRoute = LocaleIdRouteImport.update({
+  id: '/$id',
+  path: '/$id',
   getParentRoute: () => LocaleRoute,
 } as any)
 const LocaleHelpRoute = LocaleHelpRouteImport.update({
@@ -47,9 +42,14 @@ const LocaleHelpRoute = LocaleHelpRouteImport.update({
   path: '/help',
   getParentRoute: () => LocaleRoute,
 } as any)
-const LocaleIdRoute = LocaleIdRouteImport.update({
-  id: '/$id',
-  path: '/$id',
+const LocalePaymentRoute = LocalePaymentRouteImport.update({
+  id: '/payment',
+  path: '/payment',
+  getParentRoute: () => LocaleRoute,
+} as any)
+const LocaleSearchRoute = LocaleSearchRouteImport.update({
+  id: '/search',
+  path: '/search',
   getParentRoute: () => LocaleRoute,
 } as any)
 
@@ -116,18 +116,18 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/$locale': {
-      id: '/$locale'
-      path: '/$locale'
-      fullPath: '/$locale'
-      preLoaderRoute: typeof LocaleRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/': {
       id: '/'
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/$locale': {
+      id: '/$locale'
+      path: '/$locale'
+      fullPath: '/$locale'
+      preLoaderRoute: typeof LocaleRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/$locale/': {
@@ -137,18 +137,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LocaleIndexRouteImport
       parentRoute: typeof LocaleRoute
     }
-    '/$locale/search': {
-      id: '/$locale/search'
-      path: '/search'
-      fullPath: '/$locale/search'
-      preLoaderRoute: typeof LocaleSearchRouteImport
-      parentRoute: typeof LocaleRoute
-    }
-    '/$locale/payment': {
-      id: '/$locale/payment'
-      path: '/payment'
-      fullPath: '/$locale/payment'
-      preLoaderRoute: typeof LocalePaymentRouteImport
+    '/$locale/$id': {
+      id: '/$locale/$id'
+      path: '/$id'
+      fullPath: '/$locale/$id'
+      preLoaderRoute: typeof LocaleIdRouteImport
       parentRoute: typeof LocaleRoute
     }
     '/$locale/help': {
@@ -158,11 +151,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LocaleHelpRouteImport
       parentRoute: typeof LocaleRoute
     }
-    '/$locale/$id': {
-      id: '/$locale/$id'
-      path: '/$id'
-      fullPath: '/$locale/$id'
-      preLoaderRoute: typeof LocaleIdRouteImport
+    '/$locale/payment': {
+      id: '/$locale/payment'
+      path: '/payment'
+      fullPath: '/$locale/payment'
+      preLoaderRoute: typeof LocalePaymentRouteImport
+      parentRoute: typeof LocaleRoute
+    }
+    '/$locale/search': {
+      id: '/$locale/search'
+      path: '/search'
+      fullPath: '/$locale/search'
+      preLoaderRoute: typeof LocaleSearchRouteImport
       parentRoute: typeof LocaleRoute
     }
   }

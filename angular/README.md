@@ -83,12 +83,3 @@ values, wire up Angular's `fileReplacements` to swap the file at build time:
 pnpm build     # ng build
 pnpm preview   # serve with production optimizations
 ```
-
-`angular.json` lists `react` under `build.options.externalDependencies`. That is
-a build-tool workaround for an optional peer dependency, not part of the Coras
-integration: the SDK lazily loads `@coinbase/cdp-core` for crypto payments, which
-pulls in `zustand`, whose entry re-exports a React binding. `react` is an
-optional peer that a plain Angular app does not install, so without the entry the
-builder stops with `Could not resolve "react"`. Marking it external leaves the
-import unbundled in a lazy chunk the app does not load at start-up. Drop the
-entry if a future SDK release stops reaching that dependency.
